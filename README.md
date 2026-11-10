@@ -90,4 +90,4 @@ Live demo: https://dollars-and-devices-abhinav.streamlit.app/
 
 Deployment checked November 10, 2026: overview loaded; KPI Proof displayed matching calculations and a validation register with 156 checks (138 PASS, 18 N/A, zero FAIL); October Cash Controls reconciled to CAD 4,392; deliberate CAD 25 mismatch correctly triggered the expected failure. The injected error was reset. These checks do not establish comprehensive mobile, accessibility or production readiness.
 
-**Project by Abhinav Karir.** Development and documentation involved substantial AI assistance. The repository publishes synthetic inputs, reproducible calculation definitions, and tests so reviewers can inspect the work.
+**Project by Abhinav Karir.** Synthetic datasets, reproducible calculations, and automated tests are published for review.
