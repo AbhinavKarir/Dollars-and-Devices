@@ -1,6 +1,6 @@
 # Business case | Dollars & Devices
 
-**Owner perspective:** Independent junior Business Analyst portfolio case study, created with AI-assisted development.
+**Owner perspective:** Independent junior Business Analyst portfolio case study using fictional data and documented analytical assumptions.
 
 **Business problem:** Performance reporting may show a final percentage without showing the formula, inputs, origin of data, or whether the source reconciles. A management audience needs to understand the question, trust the arithmetic, spot exceptions, and assign an investigation. This fictional case asks how an institution's operating expenses and retired IT assets can be monitored together.
 
