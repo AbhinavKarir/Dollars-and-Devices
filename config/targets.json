@@ -1,0 +1,86 @@
+{
+  "financial": [
+    {
+      "perspective": "Operations",
+      "label": "Efficiency ratio",
+      "metric": "efficiency_ratio",
+      "target": 55,
+      "direction": "lower",
+      "watch_band": 2,
+      "unit": "%",
+      "why": "Expenses consumed per revenue dollar"
+    },
+    {
+      "perspective": "Value",
+      "label": "Net income margin",
+      "metric": "net_margin",
+      "target": 25,
+      "direction": "higher",
+      "watch_band": 2,
+      "unit": "%",
+      "why": "Share of revenue retained as net income"
+    },
+    {
+      "perspective": "Growth",
+      "label": "Revenue growth QoQ",
+      "metric": "revenue_growth_pct",
+      "target": 1.5,
+      "direction": "higher",
+      "watch_band": 1,
+      "unit": "%",
+      "why": "Quarter-on-quarter top-line movement"
+    },
+    {
+      "perspective": "Discipline",
+      "label": "Expense growth minus revenue growth",
+      "metric": "cost_growth_gap_pp",
+      "target": 0,
+      "direction": "lower",
+      "watch_band": 1,
+      "unit": "pp",
+      "why": "Are expenses growing faster than revenue?"
+    }
+  ],
+  "devices": [
+    {
+      "perspective": "Recovery",
+      "label": "Recycling rate",
+      "metric": "recycling_rate",
+      "target": 85,
+      "direction": "higher",
+      "watch_band": 3,
+      "unit": "%",
+      "why": "Share of retired hardware mass labelled recycled"
+    },
+    {
+      "perspective": "Progress",
+      "label": "Recycling change QoQ",
+      "metric": "recycling_pp_change",
+      "target": 1,
+      "direction": "higher",
+      "watch_band": 1,
+      "unit": "pp",
+      "why": "Change in recycling rate vs the prior quarter"
+    },
+    {
+      "perspective": "Prevention",
+      "label": "Retired device mass growth",
+      "metric": "retired_growth_pct",
+      "target": 3,
+      "direction": "lower",
+      "watch_band": 2,
+      "unit": "%",
+      "why": "Monitor retirement volume; not a standalone sustainability verdict"
+    },
+    {
+      "perspective": "Residuals",
+      "label": "Unrecycled mass growth",
+      "metric": "unrecycled_growth_pct",
+      "target": 0,
+      "direction": "lower",
+      "watch_band": 3,
+      "unit": "%",
+      "why": "Is the un-recycled weight shrinking?"
+    }
+  ]
+}
