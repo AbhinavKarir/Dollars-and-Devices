@@ -79,8 +79,8 @@ Does not prove: real banking analysis, audited financial accuracy, genuine perso
 
 The intended profile is **Junior Business Analyst – Operations, Performance Reporting and Controls**, not accountant, senior financial analyst or audit professional. Match this portfolio with your own genuine experience in market research, Excel-based tracking, stakeholder coordination and project/operations work.
 
-**Suggested truthful resume bullet after testing:**  
-"Developed an AI-assisted business analysis portfolio prototype with Python, pandas, Streamlit, Plotly and SQLite, demonstrating KPI definitions, synthetic data reconciliation, configurable controls, reporting, and requirements documentation."
+**Example resume bullet (only claim work you can personally demonstrate):**  
+"Developed a business analysis portfolio prototype with Python, pandas, Streamlit, Plotly and SQLite to demonstrate KPI definitions, synthetic data reconciliation, reporting controls and requirements documentation."
 
 ## Deployment
 
