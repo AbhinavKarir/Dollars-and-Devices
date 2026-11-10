@@ -143,6 +143,37 @@ with tabs[4]:
     fig.update_layout(xaxis_title="Efficiency (%) · lower is better", yaxis_title="Recycling (%) · higher is better")
     st.plotly_chart(fig, use_container_width=True)
     st.caption("Targets are illustrative. Bubble size indicates fictional revenue. Comparison does not establish causation.")
+
+    st.subheader("Evidence → investigation → owner")
+    above_cost = float(row["efficiency_ratio"]) > 55
+    below_recovery = float(row["recycling_rate"]) < 85
+    decision_rows = [
+        {
+            "Observed signal": f"Expense/revenue = {row['efficiency_ratio']:.1f}% (illustrative limit 55%)",
+            "Decision": "Investigate cost ratio" if above_cost else "Maintain monitoring",
+            "Proposed owner": "Finance + Operations",
+            "Evidence needed": "Expense categories, revenue mix, time period and approved definitions",
+        },
+        {
+            "Observed signal": f"Recycling = {row['recycling_rate']:.1f}% (illustrative limit 85%)",
+            "Decision": "Investigate recovery evidence" if below_recovery else "Validate recorded recovery",
+            "Proposed owner": "IT asset lead + Sustainability",
+            "Evidence needed": "Asset register, recycler receipts, disposition categories",
+        },
+    ]
+    st.dataframe(pd.DataFrame(decision_rows), hide_index=True, use_container_width=True)
+    st.caption(
+        "Suggested owners are hypothetical. These records justify asking questions, "
+        "not asserting operational root causes."
+    )
+    with st.expander("External drivers this model does NOT measure"):
+        st.markdown(
+            "Inflation, business or lending mix, interest rates, institutional scale, seasonal effects, "
+            "device replacement policy, recycling vendor contracts and differences in disclosure methods "
+            "could change how comparable the figures are. The synthetic dataset does not contain "
+            "these explanatory variables. A real BA would document them and check with business owners."
+        )
+
     st.dataframe(current.round(2), use_container_width=True, hide_index=True)
     st.download_button("Download sample quarter CSV", current.to_csv(index=False), file_name="sample_quarter.csv", mime="text/csv")
 
