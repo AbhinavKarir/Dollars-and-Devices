@@ -19,6 +19,9 @@ class DashboardSmokeTests(unittest.TestCase):
         ])
         app.sidebar.selectbox[0].select("RBC")
         app.sidebar.selectbox[1].select_index(0)
+        next(s for s in app.selectbox if s.label == "Choose the measure to verify").select(
+            "Revenue growth quarter over quarter"
+        )
         app.run()
         self.assertEqual(len(app.exception), 0)
         self.assertTrue(any(metric.value == "N/A" for metric in app.metric))
