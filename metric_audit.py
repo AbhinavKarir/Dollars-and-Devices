@@ -115,8 +115,9 @@ def trace_metric(row: pd.Series, metric: str, previous: pd.Series | None = None)
     calculated = independent_value(row, metric, previous)
     cached = row[metric]
     both_missing = pd.isna(cached) and pd.isna(calculated)
-    passed = bool(both_missing or (pd.notna(calculated) and pd.notna(cached) and
-                                   isclose(float(calculated), float(cached), rel_tol=1e-9, abs_tol=1e-9)))
+    passed = bool(pd.notna(calculated) and pd.notna(cached) and
+                  isclose(float(calculated), float(cached), rel_tol=1e-9, abs_tol=1e-9))
+    status = "N/A" if both_missing else ("PASS" if passed else "FAIL")
     inputs = {key: float(row[key]) for key in recipe["raw_columns"]}
     if previous is not None and (metric.endswith("_growth_pct") or metric.endswith("_pp_change")):
         inputs.update({"previous_" + key: float(previous[key]) for key in recipe["raw_columns"]})
@@ -126,7 +127,7 @@ def trace_metric(row: pd.Series, metric: str, previous: pd.Series | None = None)
         "inputs": inputs,
         "recomputed": calculated,
         "dashboard_value": cached,
-        "status": "PASS" if passed else "FAIL",
+        "status": status,
         "baseline": "Available" if previous is not None else "Not available",
     }
 
@@ -144,7 +145,9 @@ def validate_dataset(frame: pd.DataFrame) -> pd.DataFrame:
                     "Bank": bank, "Quarter": row["quarter"],
                     "Check": f"{trace['title']} formula",
                     "Result": trace["status"],
-                    "Detail": "Arithmetic reconciliation" if trace["status"] == "PASS" else "Calculated result differs",
+                    "Detail": ("No earlier quarter" if trace["status"] == "N/A" else
+                               "Arithmetic reconciliation" if trace["status"] == "PASS" else
+                               "Calculated result differs"),
                 })
             checks = {
                 "Non-negative retired asset mass": row["retired_kg"] >= 0,
