@@ -1,7 +1,9 @@
 # Dollars & Devices
 ### Operations reporting and financial controls | Junior Business Analyst case study
 
-**Project status:** Independent, AI-assisted, synthetic-data portfolio prototype. **Live deployment not yet verified.**
+**Project status:** Independent, AI-assisted, synthetic-data portfolio prototype.
+
+**[Open the live dashboard](https://dollars-and-devices-abhinav.streamlit.app/)**
 
 > A manager should be able to answer three questions about any KPI: where did the number come from, how was it calculated, and what decision can it actually support?
 
@@ -82,6 +84,10 @@ The intended profile is **Junior Business Analyst – Operations, Performance Re
 
 ## Deployment
 
-After local visual and calculation checks, use Streamlit Community Cloud with repository AbhinavKarir/Dollars-and-Devices, branch main, entrypoint app.py. Add the public demo link here only after deployment is confirmed.
+Deployed on Streamlit Community Cloud from repository `AbhinavKarir/Dollars-and-Devices`, branch `main`, entrypoint `app.py`, using Python 3.11.
+
+Live demo: https://dollars-and-devices-abhinav.streamlit.app/
+
+Deployment checked November 10, 2026: overview loaded; KPI Proof displayed matching calculations and a validation register with 156 checks (138 PASS, 18 N/A, zero FAIL); October Cash Controls reconciled to CAD 4,392; deliberate CAD 25 mismatch correctly triggered the expected failure. The injected error was reset. These checks do not establish comprehensive mobile, accessibility or production readiness.
 
 **Project by Abhinav Karir.** AI-assisted implementation and documentation, with transparent sample data, reproducible calculation definitions and acknowledged limits.
