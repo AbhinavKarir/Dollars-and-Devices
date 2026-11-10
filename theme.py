@@ -13,16 +13,16 @@ BANK_COLOURS = {
     "National Bank": "#bfa2ff",
 }
 
-PINK = "#ff55b7"
-CYAN = "#41ddff"
-VIOLET = "#a28aff"
-GOLD = "#ffd47c"
-NAVY = "#090b23"
+PINK = "#ff69b7"
+CYAN = "#43dfe9"
+VIOLET = "#a88cf3"
+GOLD = "#ffd39e"
+NAVY = "#10182f"
 
 CSS = r"""
 <style>
 :root {
-  --pink:#ff55b7; --cyan:#41ddff; --violet:#a28aff; --gold:#ffd47c;
+  --pink:#ff69b7; --cyan:#43dfe9; --violet:#a88cf3; --gold:#ffd39e;
   --ink:#f5f5ff; --muted:#afb4d7; --deep:#090b23; --panel:#151633;
 }
 html, body, [class*="css"], [data-testid="stAppViewContainer"] {font-family: "Trebuchet MS", Arial, sans-serif;}
@@ -124,6 +124,48 @@ div.stButton > button:hover, div.stDownloadButton > button:hover {filter:brightn
 .score-badge.missing {background:#b5b9d4;}
 .small-print {font-size:.78rem; color:#abb9d9; line-height:1.5;}
 .neon-rule {height:3px; background:linear-gradient(90deg,#ff55b7,#41ddff,transparent); margin:16px 0;}
+
+/* Pastel coast: coral sunshine and electric sea, balanced against a readable navy stage. */
+.stApp {
+ background:
+   radial-gradient(ellipse 41% 36% at 88% 1%,rgba(255,155,192,.23),transparent 95%),
+   radial-gradient(ellipse 52% 34% at 0% 17%,rgba(73,221,228,.19),transparent 93%),
+   radial-gradient(ellipse 41% 43% at 70% 67%,rgba(177,116,223,.12),transparent 98%),
+   linear-gradient(160deg,#13122f,#1c2050 52%,#081d33 100%);
+}
+.neon-hero {
+ background:
+   radial-gradient(ellipse at 83% 20%,rgba(255,143,174,.31),transparent 39%),
+   linear-gradient(110deg,rgba(16,17,48,.99),rgba(38,31,82,.99) 66%,rgba(79,39,96,.93));
+ border-color:rgba(99,230,236,.55);
+ box-shadow:0 15px 55px rgba(15,8,38,.38), inset 0 0 45px rgba(255,156,197,.06);
+}
+.neon-hero .hero-title {text-shadow:4px 4px 0 #ee609f,8px 8px 0 #1b5278;}
+.neon-quote {
+ padding:20px 24px; margin:16px 0; border-radius:17px;
+ border-left:6px solid #ff8eb5;
+ background:linear-gradient(105deg,rgba(77,46,108,.96),rgba(23,49,90,.95));
+ box-shadow:0 10px 28px rgba(4,8,30,.2);
+}
+.quote-line {font-size:clamp(1.18rem,2.3vw,1.8rem);font-weight:900;line-height:1.25;letter-spacing:-.025em;color:#fff3f7;margin:7px 0;}
+.quote-credit {font-size:.75rem;color:#c5e8ee;letter-spacing:.03em;}
+.neon-overview {
+ border-radius:17px;padding:22px 25px;margin-bottom:18px;
+ border:1px solid rgba(90,231,227,.4);
+ background:linear-gradient(125deg,rgba(17,39,68,.95),rgba(40,34,74,.96));
+}
+.neon-overview h3 {font-size:1.46rem!important;margin:8px 0!important;}
+.neon-overview p {font-size:1rem;line-height:1.65;color:#e4ebf9;}
+.overview-chips {display:flex;gap:7px;flex-wrap:wrap;margin-top:13px;}
+.overview-chips span {font-size:.77rem;font-weight:800;color:#17273b;background:#8ce9ef;padding:7px 10px;border-radius:9px;}
+[data-testid="stTabs"] button[aria-selected="true"] {color:#66e8ed!important;border-bottom-color:#66e8ed!important;}
+.score-panel {border-top:2px solid rgba(104,234,232,.65);}
+.score-panel:nth-child(odd) {border-top-color:rgba(255,123,187,.78);}
+@media (max-width:750px) {
+ .neon-hero {padding:20px;}
+ .neon-overview,.neon-quote {padding:18px;}
+}
+
 </style>
 """
 
