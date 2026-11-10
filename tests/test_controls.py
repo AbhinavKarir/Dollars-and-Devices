@@ -1,7 +1,11 @@
 """Tests of transparent KPI traces and fictional household controls."""
 import unittest
+from pathlib import Path
+from tempfile import TemporaryDirectory
 
-from analytics import load_metrics
+import pandas as pd
+
+from analytics import load_metrics, ROOT
 from metric_audit import RECIPES, trace_metric, validate_dataset
 from finance_controls import load_case, reconcile, budget_variance, continuity_check
 
@@ -59,9 +63,25 @@ class TraceAndControlsTests(unittest.TestCase):
         self.assertEqual(rows.loc[rows.variance > 0, "variance"].sum(), 57)
 
     def test_duplicate_transaction_is_rejected(self):
-        # A duplicate ID in a prospective input should be flagged before reporting.
-        copies = self.ledger.transaction_id
-        self.assertEqual(len(copies), len(set(copies)))
+        # Intentionally damage an input file and verify the parser raises an error.
+        with TemporaryDirectory() as folder:
+            edited = self.ledger.copy()
+            edited.loc[1, "transaction_id"] = edited.loc[0, "transaction_id"]
+            edited.to_csv(Path(folder) / "transactions.csv", index=False)
+            self.statements.to_csv(Path(folder) / "statements.csv", index=False)
+            self.budgets.to_csv(Path(folder) / "budgets.csv", index=False)
+            with self.assertRaisesRegex(ValueError, "Duplicate transaction ID"):
+                load_case(folder)
+
+    def test_zero_revenue_is_rejected(self):
+        with TemporaryDirectory() as folder:
+            finance = pd.read_csv(ROOT / "data" / "raw" / "bank_financials.csv")
+            assets = pd.read_csv(ROOT / "data" / "raw" / "bank_ewaste.csv")
+            finance.loc[0, "revenue"] = 0
+            finance.to_csv(Path(folder) / "bank_financials.csv", index=False)
+            assets.to_csv(Path(folder) / "bank_ewaste.csv", index=False)
+            with self.assertRaisesRegex(ValueError, "Revenue must be positive"):
+                load_metrics(folder)
 
 
 if __name__ == "__main__":
