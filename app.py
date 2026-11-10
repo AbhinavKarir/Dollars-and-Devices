@@ -33,8 +33,32 @@ prev = earlier.iloc[-1] if not earlier.empty else None
 current = df[df.quarter == quarter]
 
 st.markdown('<div class="neon-hero"><span class="eyebrow">BUSINESS INTELLIGENCE LAB / ISSUE 01</span><div class="hero-title">DOLLARS <span>&</span><br>DEVICES</div><div class="hero-sub">The cost of doing business. The cost of retiring tech. A neon executive analytics case study for better decisions.</div><div class="hero-stamp">SAMPLE DATA · DEMONSTRATION ONLY</div></div>', unsafe_allow_html=True)
+
+st.image("assets/neon_coast.svg", use_container_width=True)
+st.markdown(
+    '<div class="neon-quote"><div class="eyebrow">THE ONE THING TO REMEMBER</div>'
+    '<div class="quote-line">You forget a thousand things every day. Make sure this is not one of &#39;em.</div>'
+    '<div class="quote-credit">A playful game-inspired line for a portfolio case study</div></div>',
+    unsafe_allow_html=True
+)
+st.markdown(
+    '<div class="neon-overview"><div class="eyebrow">START HERE / THE STORY</div>'
+    '<h3>What is Dollars &amp; Devices?</h3>'
+    '<p>This is an interactive <b>business analyst portfolio dashboard</b> that asks a simple question: '
+    'Can an organization run efficiently while managing retired technology responsibly? '
+    'It uses six <b>fictional Canadian bank profiles</b> and two quarters of <b>sample data</b> to compare '
+    'expenses, profitability, technology waste and recycling. '
+    'Explore the scorecards, compare performance, test assumptions and see what different stakeholders need. '
+    '<b>No figures here represent actual bank performance.</b></p>'
+    '<div class="overview-chips"><span>01 · Select an institution</span>'
+    '<span>02 · Explore the KPIs</span><span>03 · Read the news</span>'
+    '<span>04 · Test a scenario</span></div></div>',
+    unsafe_allow_html=True
+)
+st.caption("BUILT FOR BUSINESS ANALYSIS · Finance · Operations · Technology assets · Sustainability · Strategy")
+
 st.caption(f"FOCUS: {bank} | {quarter} | Currency: CAD millions | Devices: kilograms")
-tabs = st.tabs(["📡 Executive pulse", "📰 Story Mode", "🎛️ Scorecards", "📈 Benchmark", "🧪 Scenarios", "👥 Stakeholders", "📚 Analyst guide"])
+tabs = st.tabs(["📡 Executive pulse", "📰 Story Mode", "🎛️ Scorecards", "📈 Benchmark", "🧪 Scenarios", "👥 Stakeholders"])
 
 with tabs[0]:
     st.header("Executive pulse")
@@ -59,25 +83,50 @@ with tabs[0]:
 
 with tabs[1]:
     st.header("The Neon Newsroom")
+    st.caption("Every dollar leaves a trail. Every device has a history.")
     st.caption("Rule-based sample-data headlines. No invented drivers or AI guesses.")
     for item in story_cards(row):
         st.markdown('<div class="comic-panel ' + item["accent"] + '"><div class="eyebrow">' + item["eyebrow"] + '</div><h3>' + item["headline"] + '</h3><p>' + item["body"] + '</p></div>', unsafe_allow_html=True)
     trend = history.melt(id_vars="quarter", value_vars=["efficiency_ratio", "net_margin", "recycling_rate"], var_name="metric", value_name="rate")
     st.plotly_chart(px.line(trend, x="quarter", y="rate", color="metric", markers=True, color_discrete_sequence=[PINK, CYAN, VIOLET]), use_container_width=True)
 
+
+def display_scorecard(frame):
+    """Render an accessible four-perspective BA scorecard using illustrative thresholds."""
+    for entry in frame.to_dict("records"):
+        status = str(entry["Status"])
+        badge = {"On target": "good", "Watch": "watch", "Off target": "bad"}.get(status, "missing")
+        measure = "No baseline" if pd.isna(entry["Value"]) else f'{entry["Value"]:.1f}{entry["Unit"]}'
+        sign = "≤" if entry["Direction"] == "lower" else "≥"
+        st.markdown(
+            '<div class="score-panel">'
+            f'<div class="eyebrow">{entry["Perspective"]}</div>'
+            '<div class="score-head">'
+            f'<span class="score-title">{entry["Metric"]}</span>'
+            f'<span class="score-value">{measure}</span>'
+            f'<span class="score-badge {badge}">{status}</span>'
+            '</div>'
+            f'<div class="score-note">Sample target {sign} {entry["Target"]:.1f}{entry["Unit"]} · '
+            f'{entry["Why it matters"]}</div></div>',
+            unsafe_allow_html=True,
+        )
+
 with tabs[2]:
     st.header("Balanced scorecards")
     a, b = st.columns(2)
     with a:
         st.subheader("💵 Money scorecard")
-        st.dataframe(make_scorecard(row, targets["financial"])[["Perspective","Metric","Value","Target","Status","Why it matters"]].round(2), hide_index=True, use_container_width=True)
+        display_scorecard(make_scorecard(row, targets["financial"]))
     with b:
         st.subheader("♻️ Devices scorecard")
-        st.dataframe(make_scorecard(row, targets["devices"])[["Perspective","Metric","Value","Target","Status","Why it matters"]].round(2), hide_index=True, use_container_width=True)
+        display_scorecard(make_scorecard(row, targets["devices"]))
     st.caption("All targets and amber bands are hypothetical and editable in config/targets.json.")
+    with st.expander("See the detailed scorecard metrics"):
+        st.dataframe(pd.concat([make_scorecard(row, targets["financial"]), make_scorecard(row, targets["devices"])], ignore_index=True).round(2), hide_index=True, use_container_width=True)
 
 with tabs[3]:
     st.header("Lean & Green performance quadrant")
+    st.caption("When the numbers collide, decisions begin.")
     fig = px.scatter(current, x="efficiency_ratio", y="recycling_rate", size="revenue", color="bank", text="bank", color_discrete_map=BANK_COLOURS, size_max=45)
     fig.update_traces(textposition="top center")
     fig.add_vline(x=55, line_dash="dash", line_color=PINK)
@@ -90,6 +139,7 @@ with tabs[3]:
 
 with tabs[4]:
     st.header("What-if scenario lab")
+    st.caption("Know the score before you make the move.")
     a, b = st.columns(2)
     reduction = a.slider("Expense reduction (%)", 0.0, 20.0, 5.0, 0.5)
     recycling = b.slider("Recycling uplift (percentage points)", 0.0, 20.0, 5.0, 0.5)
@@ -122,17 +172,6 @@ with tabs[5]:
     graphic.update_yaxes(range=[0,6])
     st.plotly_chart(graphic, use_container_width=True)
     st.caption("Stakeholder positions are fictional examples.")
-
-with tabs[6]:
-    st.header("BA interview guide")
-    st.write("**Problem:** Bring financial efficiency and responsible IT asset retirement into one decision-ready view.")
-    st.write("**Process:** discovery → validation → KPIs → benchmarking → stakeholder review → recommendation.")
-    st.markdown("**Formulas:** Efficiency = expenses / revenue × 100. Margin = net income / revenue × 100. Recycling = recycled kg / retired kg × 100.")
-    st.write("**Rate changes:** 85% to 88% is +3 percentage points, NOT 3% growth.")
-    st.write("**Aggregation:** Divide portfolio totals rather than averaging standalone percentages.")
-    st.write("**Limits:** Fictional numbers, two quarters, and hypothetical targets. No causal or investment conclusions.")
-    st.write("**Reuse:** Replace banks with locations, departments, suppliers, or products and validate KPIs with domain experts.")
-    st.code("streamlit run app.py", language="bash")
 
 st.divider()
 st.caption("DOLLARS & DEVICES · NEON EDITION | Original BA portfolio case study | Fictional data only")
