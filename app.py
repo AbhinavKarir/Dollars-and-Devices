@@ -52,7 +52,7 @@ with overview_left:
         unsafe_allow_html=True
     )
 with overview_right:
-    st.image("assets/neon_coast.svg", use_container_width=True)
+    st.image("assets/neon_coast.svg", width="stretch")
     st.caption("Original retro-coast illustration. Neon styling does not replace calculation evidence.")
 
 st.caption("BUILT FOR BUSINESS ANALYSIS · Finance · Operations · Technology assets · Sustainability · Strategy")
@@ -131,7 +131,7 @@ with tabs[3]:
         display_scorecard(make_scorecard(row, targets["devices"]))
     st.caption("All targets and amber bands are hypothetical and editable in config/targets.json.")
     with st.expander("See the detailed scorecard metrics"):
-        st.dataframe(pd.concat([make_scorecard(row, targets["financial"]), make_scorecard(row, targets["devices"])], ignore_index=True).round(2), hide_index=True, use_container_width=True)
+        st.dataframe(pd.concat([make_scorecard(row, targets["financial"]), make_scorecard(row, targets["devices"])], ignore_index=True).round(2), hide_index=True, width="stretch")
 
 with tabs[4]:
     st.header("Lean & Green performance quadrant")
@@ -141,7 +141,7 @@ with tabs[4]:
     fig.add_vline(x=55, line_dash="dash", line_color=PINK)
     fig.add_hline(y=85, line_dash="dash", line_color=CYAN)
     fig.update_layout(xaxis_title="Efficiency (%) · lower is better", yaxis_title="Recycling (%) · higher is better")
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width="stretch")
     st.caption("Targets are illustrative. Bubble size indicates fictional revenue. Comparison does not establish causation.")
 
     st.subheader("Evidence → investigation → owner")
@@ -161,7 +161,7 @@ with tabs[4]:
             "Evidence needed": "Asset register, recycler receipts, disposition categories",
         },
     ]
-    st.dataframe(pd.DataFrame(decision_rows), hide_index=True, use_container_width=True)
+    st.dataframe(pd.DataFrame(decision_rows), hide_index=True, width="stretch")
     st.caption(
         "Suggested owners are hypothetical. These records justify asking questions, "
         "not asserting operational root causes."
@@ -174,7 +174,7 @@ with tabs[4]:
             "these explanatory variables. A real BA would document them and check with business owners."
         )
 
-    st.dataframe(current.round(2), use_container_width=True, hide_index=True)
+    st.dataframe(current.round(2), width="stretch", hide_index=True)
     st.download_button("Download sample quarter CSV", current.to_csv(index=False), file_name="sample_quarter.csv", mime="text/csv")
 
     st.divider()
@@ -210,7 +210,7 @@ with tabs[5]:
     graphic.update_traces(marker_size=17, textposition="top center")
     graphic.update_xaxes(range=[0,6])
     graphic.update_yaxes(range=[0,6])
-    st.plotly_chart(graphic, use_container_width=True)
+    st.plotly_chart(graphic, width="stretch")
     st.caption("Stakeholder positions are fictional examples.")
 
 st.divider()
