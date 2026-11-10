@@ -1,135 +1,87 @@
-# 💿 Dollars & Devices: Neon Edition
+# Dollars & Devices
+### Operations reporting and financial controls | Junior Business Analyst case study
 
-### A business analyst's executive decision-intelligence case study
+**Project status:** Independent, AI-assisted, synthetic-data portfolio prototype. **Live deployment not yet verified.**
 
-**Live Streamlit demo:** _Add your deployment link here once published._
+> A manager should be able to answer three questions about any KPI: where did the number come from, how was it calculated, and what decision can it actually support?
 
-A distinctive Miami-neon editorial take on the executive dashboard: financial efficiency meets responsible IT device retirement. This is an **original educational portfolio project** with transparent, **fully fictional Canadian bank-labelled sample data**. It is not real-world bank reporting, an investment tool, or a brand-affiliated product.
+This project was designed to demonstrate business analysis skills useful beyond banking: defining KPIs, validating information, documenting requirements, reconciling a small cash ledger, interpreting budget variance, examining operational risks, and communicating recommendations. It uses fictional institution-labelled finance and e-waste records plus a separate synthetic personal cash-flow exercise. No figures are genuine company performance or private user information.
 
-## Why this is a business analyst project
+## What the dashboard does
 
-The challenge is wider than banking. Leaders in many industries need to connect money spent, outcomes achieved, and operational sustainability to measurable actions. The business analysis workflow is:
-
-1. Define the business problem and KPI requirements.
-2. Validate source data and reconcile metrics.
-3. Track targets and exceptions with balanced scorecards.
-4. Compare performance without making causal claims.
-5. Translate evidence into stakeholder-specific decisions.
-6. Use scenarios to surface assumptions for investigation.
-
-## Explore the seven sections
-
-| Section | Business question | Feature |
+| Screen | Business question | Demonstrated skill |
 | --- | --- | --- |
-| Executive pulse | How are operations performing? | KPI cards, 100-cent graphic, weighted portfolio performance |
-| Neon Newsroom | What changed and why should we care? | Rule-based, verifiable captions |
-| Dual scorecards | Are we meeting defined targets? | Finance and circularity perspectives, editable thresholds |
-| Benchmark | How do institutions compare? | Lean & Green quadrant and raw data table |
-| Scenario lab | What happens if assumptions change? | Expense and recycling sensitivities |
-| Stakeholders | Who needs what information? | Engagement lens and power–interest grid |
-| Analyst guide | How were measures created? | KPI definitions, assumptions, reuse guide |
+| Overview | What changed, and where should we investigate? | KPI definitions, evidence-led narrative, weighted portfolio ratios |
+| KPI proof | Can we independently reproduce the result? | Raw inputs, formulas, source lineage and validation register |
+| Cash controls | Does the ledger reconcile, and what is over budget? | Financial literacy, reconciliation, variance analysis and exception detection |
+| Scorecards | Which illustrative targets are missed? | Configurable business rules and missing-baseline handling |
+| Compare & decide | Which profiles need investigation? | Cross-comparison and sensitivity assumptions |
+| Stakeholders | Who needs which question answered? | Stakeholder segmentation, process and decision framing |
 
-## Visual identity
+The coastal pink-and-turquoise design is original CSS/SVG styling. Its purpose is recognition and legibility, not proof of analytics.
 
-The project draws on vintage neon editorial layouts, halftone dots, original CSS art, cyan/pink gradients, and bank-specific accent colours. It **does not use official GTA, Marvel, or Rockstar artwork**, and is intended to maintain accessible readability rather than sacrifice it for visual effects.
+## Try it
 
-## Run locally
+Requires Python 3.11 or newer. From the project directory:
 
-Python 3.11+ recommended.
+    python -m pip install -r requirements.txt
+    streamlit run app.py
 
-### Windows PowerShell
+Verify calculations:
 
-~~~powershell
-python -m venv venv
-.\venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
-streamlit run app.py
-~~~
+    python -m unittest discover -s tests -v
+    python scripts/sql_case.py
 
-### macOS or Linux
+A GitHub Actions workflow file also describes compile and unit-test checks. **Check the Actions tab for a real result before calling CI successful.**
 
-~~~bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
-streamlit run app.py
-~~~
+## Worked examples
 
-Run tests:
+**Synthetic RBC 2026-Q2 recovery:** 4,000 kg desktops + 2,800 kg ATM terminals + 3,300 kg laptops = 10,100 kg retired; 9,100 kg recycled ÷ 10,100 kg retired × 100 = **90.10%**. KPI proof exposes the inputs, calculation and an independent comparison against the dashboard result.
 
-~~~bash
-python -m unittest discover -s tests -v
-~~~
+**Synthetic October cash control:** Opening balance CAD 3,518 + deposits CAD 3,500 − withdrawals CAD 2,626 = **CAD 4,392**, equal to the separately stored sample statement. A CAD 25 artificial mismatch shows how the control flags an exception. Groceries are CAD 25 over their sample budget; dining CAD 32 over. A ledger can reconcile while spending remains over budget.
 
-> If a previous virtual environment exists, activate it rather than creating a new one. The legacy day01–day11 files remain untouched as a record of learning.
+## Business analysis artefacts
 
-## Repository layout
+- [Business case and boundaries](docs/business_case.md)
+- [Prioritized requirements and acceptance criteria](docs/requirements.md)
+- [Conceptual before/after process map](docs/process_map.md)
+- [Sample analytical observations](docs/analyst_notes.md)
 
-~~~text
-app.py                 # the current portfolio app
-analytics.py           # validated financial & recovery calculations
-theme.py               # original editorial neon CSS
-config/targets.json    # editable hypothetical scorecard targets
-data/raw/              # fictional input finance and e-waste tables
-data/processed/        # existing practice outputs from the learning phase
-tests/test_analytics.py # metric and edge-case regression checks
-day01_hello.py ...     # preserved learning scripts
-requirements.txt       # Python dependencies
-~~~
+These are authored portfolio case-study artefacts, **not** records of actual stakeholder interviews, real organizational sign-off or client UAT.
 
-## Data dictionary
+## Files and evidence
 
-| Field | Unit | Purpose |
-| --- | --- | --- |
-| bank | category | Fictional institutional entity |
-| quarter | YYYY-QN | Time grain (two illustrative 2026 quarters) |
-| revenue | CAD millions | Modelled revenue for the period |
-| expenses | CAD millions | Modelled expenses |
-| net_income | CAD millions | Modelled net income |
-| desktops_kg | kg | Retired desktop hardware |
-| laptops_kg | kg | Retired laptops |
-| atm_terminals_kg | kg | Retired ATM terminal hardware |
-| recycled_kg | kg | Reported-as-recycled weight within the fictional case |
-| retired_kg | kg | Sum of three retired hardware classes |
-| efficiency_ratio | % | 100 × expenses ÷ revenue (lower generally better) |
-| net_margin | % | 100 × net_income ÷ revenue (higher generally better) |
-| recycling_rate | % | 100 × recycled_kg ÷ retired_kg (higher generally better) |
-| unrecycled_kg | kg | retired_kg − recycled_kg |
-| *_growth_pct | % | Quarter-over-quarter relative change |
-| *_pp_change | percentage points | Difference between quarter rates |
+| File | Role |
+| --- | --- |
+| app.py | Streamlit UI, filters, executive and decision views |
+| analytics.py | Base dataset validation and financial/e-waste calculations |
+| metric_audit.py | Independently recalculates KPIs and prepares a data-quality register |
+| finance_controls.py | Reads separate cash ledger, statements and budgets; performs reconciliation |
+| evidence_views.py | Makes arithmetic and reconciliation evidence visible in the app |
+| config/targets.json | Hypothetical finance and IT-device operating thresholds |
+| scripts/sql_case.py | SQLite in-memory join and independent KPI calculation example |
+| tests/ | Automated regression and financial-controls tests |
+| .github/workflows/quality.yml | CI workflow definition |
+| data/raw/ | Invented institution finance and device records |
+| data/finance_case/ | Invented household cash transactions, statements and budgets |
 
-### Analytical safeguards
+**Formulas:** Efficiency = expenses / revenue × 100. Net margin = net income / revenue × 100. Recycling = recycled kg / retired kg × 100. Portfolio ratios divide summed numerators by summed denominators. Percentage-point movements are rate differences; percentage growth is a relative change. Cash reconciliation = opening + deposits − withdrawals − statement closing. Budget variance = actual expenses − budget.
 
-- The source data is validated for missing fields, empty cells, duplicate institution–quarter keys, negative quantities, zero denominators, and recycled mass above retired mass.
-- Portfolio ratios are **calculated from aggregate numerators and denominators**, not averaged across bank rates.
-- Quarter comparisons for ratio metrics use **percentage points**. Growth metrics use **percent change**.
-- A first quarter without baseline receives **No baseline** rather than a misleading status.
-- Targets and watch bands are **illustrative assumptions**, stored separately in JSON.
-- The 100-cent display is a simplified metaphor; the residual is not an accounting line item.
-- What-if sliders do not establish causation. Revenue and retired material mass are held constant; expense savings do **not** automatically increase net income.
+## What this proves and what it cannot prove
 
-## Design of the business-analysis workflow
+Demonstrates: formulating a business problem, prototype requirements, synthetic data validation, explainable metrics, discrepancy detection, example stakeholder questions, elementary SQL joins and decision communication.
 
-**Example requirement:** As an executive sponsor, I want to compare unit cost efficiency with technology recovery rates so that I can prioritize deeper operational investigation.
+Does not prove: real banking analysis, audited financial accuracy, genuine personal financial management, actual IT sustainability, production SQL systems, stakeholder interviews, a delivered business outcome, or full accounting expertise. Two quarters of invented records do not establish a trend.
 
-**Acceptance criteria:** Select any institution and period; see recomputed ratios, labelled units, scorecard statuses, supporting raw figures, a scenario sensitivity, and clear sample-data disclaimers.
+## Positioning for Canadian junior BA roles
 
-**Potential next iteration:** Replace synthetic CSVs with permissioned operational datasets, document ownership and quality rules, consult subject-matter experts on target setting, and conduct stakeholder acceptance testing.
+The intended profile is **Junior Business Analyst – Operations, Performance Reporting and Controls**, not accountant, senior financial analyst or audit professional. Match this portfolio with your own genuine experience in market research, Excel-based tracking, stakeholder coordination and project/operations work.
 
-## Deploy on Streamlit Community Cloud
+**Suggested truthful resume bullet after testing:**  
+"Developed an AI-assisted business analysis portfolio prototype with Python, pandas, Streamlit, Plotly and SQLite, demonstrating KPI definitions, synthetic data reconciliation, configurable controls, reporting, and requirements documentation."
 
-1. Push the project to GitHub.
-2. Visit https://share.streamlit.io and sign in with GitHub.
-3. Select repository **AbhinavKarir/Dollars-and-Devices**, branch **main**, and entrypoint **app.py**.
-4. Deploy, test the public URL, and put it above as the Live Streamlit demo.
-5. Capture screenshots for recruiters only after verifying metrics, visuals, and mobile usability.
+## Deployment
 
-## Resume-friendly description (after testing and publishing)
+After local visual and calculation checks, use Streamlit Community Cloud with repository AbhinavKarir/Dollars-and-Devices, branch main, entrypoint app.py. Add the public demo link here only after deployment is confirmed.
 
-> Built Dollars & Devices, a Streamlit/Plotly business intelligence portfolio project comparing six fictional institutional profiles across financial and device-recovery KPIs, with validated metric calculations, configurable scorecards, scenario analysis, rule-based insights, and stakeholder views.
-
-**Important:** The figures are educational examples and should never be presented as authentic company performance. Do not make unsupported claims about business impact.
-
-## Credit
-
-Built as a portfolio project for Abhinav Karir, with AI-assisted implementation and review.
+**Project by Abhinav Karir.** AI-assisted implementation and documentation, with transparent sample data, reproducible calculation definitions and acknowledged limits.
