@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 505" role="img" aria-labelledby="title desc">
+<title id="title">Neon Coast - finance and technology waterfront illustration</title>
+<desc id="desc">Original editorial artwork with pastel coral sunset, purple skyline, turquoise waterfront, palm tree silhouettes and abstract dollar motifs.</desc>
+<defs>
+<linearGradient id="sky" x1="0" x2="0.9" y1="0" y2="1"><stop offset="0" stop-color="#f99bc8"/><stop offset=".39" stop-color="#ff91ac"/><stop offset=".78" stop-color="#f9ad99"/><stop offset="1" stop-color="#ffe1a8"/></linearGradient>
+<linearGradient id="water" x1="0" x2=".9" y1="0" y2="1"><stop offset="0" stop-color="#5be4e2"/><stop offset=".55" stop-color="#4399d2"/><stop offset="1" stop-color="#302c7a"/></linearGradient>
+<linearGradient id="sun" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#fff0ba"/><stop offset=".5" stop-color="#ffd193"/><stop offset="1" stop-color="#f987a5"/></linearGradient>
+<linearGradient id="tower" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#71578e"/><stop offset="1" stop-color="#292151"/></linearGradient>
+<pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="2.3" fill="#2c3463" opacity=".19"/></pattern>
+<pattern id="windows" width="17" height="20" patternUnits="userSpaceOnUse"><rect x="4" y="4" width="5" height="8" fill="#7ae9d9" opacity=".65"/></pattern>
+<filter id="soft"><feGaussianBlur stdDeviation="14"/></filter>
+<clipPath id="frame"><rect width="1440" height="505" rx="23"/></clipPath>
+</defs>
+<g clip-path="url(#frame)">
+<rect width="1440" height="505" fill="url(#sky)"/>
+<path d="M0 0H1440V140Q1080 145 720 42T0 90Z" fill="#ffb8d1" opacity=".6"/>
+<path d="M0 15Q380 0 630 95Q920 180 1440 40" fill="none" stroke="#ffb6d8" stroke-width="8" opacity=".54"/>
+<rect width="1440" height="360" fill="url(#dots)"/>
+<g fill="none" stroke="#fff2cd" stroke-width="3" opacity=".6"><path d="M0 206H1440"/><path d="M0 235H1440"/></g>
+<circle cx="998" cy="199" r="132" fill="#fcedd9" opacity=".35" filter="url(#soft)"/>
+<circle cx="998" cy="199" r="110" fill="url(#sun)"/>
+<path d="M884 232H1112M896 251H1099M909 269H1088M924 286H1074" stroke="#ff8da9" stroke-width="7" opacity=".85"/>
+<g fill="#695b8e" opacity=".30"><path d="M0 305L129 260L210 278L295 233L385 283L480 239L576 293L680 248L772 296L858 248L954 297L1067 266L1182 302L1272 253L1440 302V360H0Z"/></g>
+<path d="M0 346H1440V505H0Z" fill="url(#water)"/>
+<path d="M0 344Q320 331 576 350T1150 342T1440 352" fill="none" stroke="#e7fff7" stroke-width="9" opacity=".6"/>
+<path d="M0 381Q330 369 600 383T1440 375" fill="none" stroke="#c1f9ff" stroke-width="5" opacity=".4"/>
+<path d="M0 422Q310 409 580 426T1430 418" fill="none" stroke="#edb9eb" stroke-width="5" opacity=".35"/>
+<g fill="url(#tower)" stroke="#292451" stroke-width="5">
+<rect x="110" y="210" width="105" height="138"/><rect x="229" y="178" width="97" height="170"/><rect x="337" y="240" width="100" height="111"/>
+<rect x="443" y="182" width="124" height="167"/><rect x="580" y="228" width="66" height="118"/><rect x="656" y="251" width="92" height="100"/>
+<path d="M768 348V256L806 225L851 256V348Z"/><rect x="1115" y="260" width="84" height="89"/><rect x="1205" y="218" width="92" height="128"/>
+</g>
+<g fill="url(#windows)" opacity=".95">
+<rect x="110" y="220" width="105" height="115"/><rect x="233" y="188" width="88" height="147"/>
+<rect x="338" y="249" width="93" height="84"/><rect x="447" y="193" width="116" height="141"/>
+<rect x="580" y="236" width="66" height="102"/><rect x="658" y="259" width="88" height="80"/>
+<rect x="1121" y="268" width="74" height="68"/><rect x="1210" y="225" width="80" height="110"/>
+</g>
+<path d="M272 178V120M262 120H281M497 183V118M489 117H507" stroke="#503766" stroke-width="6"/>
+<g opacity=".85" stroke="#46e5e2" fill="none"><path d="M495 190V290" stroke-width="6"/><path d="M255 215H309" stroke-width="4"/><path d="M1210 238H1276" stroke-width="4"/></g>
+<g fill="#29204f">
+<path d="M53 505Q79 367 80 241Q73 197 66 163L84 151Q107 225 108 283Q111 397 127 505Z"/>
+<path d="M82 178Q25 139-25 161Q29 167 60 202L83 213Z"/>
+<path d="M82 169Q130 120 194 139Q142 144 101 204L82 213Z"/>
+<path d="M82 174Q29 111-19 105Q25 136 75 204Z"/>
+<path d="M86 174Q127 105 173 95Q139 136 96 196Z"/>
+<path d="M86 169Q66 115 77 75Q91 121 95 191Z"/>
+<path d="M1350 505Q1326 379 1329 257Q1333 208 1353 163L1335 152Q1304 221 1302 290Q1293 418 1273 505Z"/>
+<path d="M1335 183Q1273 138 1213 161Q1278 168 1318 207L1337 206Z"/>
+<path d="M1335 181Q1393 124 1459 139Q1394 143 1348 208Z"/>
+<path d="M1335 181Q1281 112 1218 102Q1285 133 1327 206Z"/>
+<path d="M1337 174Q1393 102 1457 90Q1392 130 1346 199Z"/>
+<path d="M1336 167Q1356 117 1356 70Q1328 124 1327 189Z"/>
+</g>
+<g transform="translate(100,365)" fill="#27214d">
+<path d="M0 82L38 7H282L326 82Z" stroke="#40d5db" stroke-width="7"/>
+<rect x="42" y="9" width="240" height="65" rx="6" fill="#31275c"/>
+<path d="M55 25H260M55 45H260" stroke="#ff84bd" stroke-width="4" opacity=".7"/>
+<rect x="143" y="-8" width="52" height="21" rx="6" fill="#5be4e2"/>
+<path d="M18 89H306" stroke="#ffc994" stroke-width="4"/>
+</g>
+<g opacity=".68" fill="none" stroke="#fff6d9" stroke-width="4"><circle cx="745" cy="93" r="28"/><path d="M736 74H748Q766 77 755 93Q737 108 754 116M746 67V125"/></g>
+<g font-family="Verdana,Arial,sans-serif" fill="#29214c" font-weight="bold" opacity=".72">
+<text x="120" y="94" font-size="18" letter-spacing="7">THE COST OF BUSINESS</text>
+<text x="124" y="122" font-size="14" letter-spacing="4">THE FUTURE OF DEVICES</text>
+</g>
+<rect x="0" y="0" width="1440" height="505" rx="23" fill="none" stroke="#ffbfdd" stroke-width="11"/>
+<path d="M0 481H1440" stroke="#41dee4" stroke-width="7" opacity=".9"/>
+</g></svg>
