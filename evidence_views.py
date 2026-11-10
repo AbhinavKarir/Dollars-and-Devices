@@ -34,7 +34,7 @@ def render_kpi_workbench(data, bank, quarter):
     st.code(trace["formula"], language="text")
     st.write("Data source:", trace["source"])
     inputs = pd.DataFrame([{"Field": k, "Original value": v} for k, v in trace["inputs"].items()])
-    st.dataframe(inputs, hide_index=True, use_container_width=True)
+    st.dataframe(inputs, hide_index=True, width="stretch")
     st.write("Business meaning:", trace["meaning"])
     st.write("Analyst follow-up:", trace["decision"])
     if trace["status"] == "FAIL":
@@ -56,7 +56,7 @@ def render_kpi_workbench(data, bank, quarter):
     w.metric("N/A", int(totals.get("N/A", 0)))
     exceptions_only = st.toggle("Show only failures and unavailable comparisons")
     subset = checks.loc[checks.Result != "PASS"] if exceptions_only else checks
-    st.dataframe(subset, hide_index=True, use_container_width=True)
+    st.dataframe(subset, hide_index=True, width="stretch")
     st.download_button("Export check register", checks.to_csv(index=False),
                        file_name="validation_register.csv", mime="text/csv")
 
@@ -115,7 +115,7 @@ def render_financial_controls():
     chart = px.bar(display, x="category", y="CAD", color="measure", barmode="group",
                    color_discrete_map={"Budget":"#4cdce6", "Actual":"#f180b0"})
     chart.update_layout(xaxis_title="", legend_title="")
-    st.plotly_chart(chart, use_container_width=True)
+    st.plotly_chart(chart, width="stretch")
     overs = variances.loc[variances.variance > 0]
     x, y, z = st.columns(3)
     x.metric("Categories over budget", len(overs))
@@ -127,11 +127,11 @@ def render_financial_controls():
             f"Investigation candidate: {top['category']} is CAD {top['variance']:.2f} over budget. "
             "Determine whether the cause is recurring spending or an unrealistic budget."
         )
-    st.dataframe(variances.round(2), hide_index=True, use_container_width=True)
+    st.dataframe(variances.round(2), hide_index=True, width="stretch")
     with st.expander("Inspect underlying fictional transactions"):
         records = ledger.loc[ledger.month == month].copy()
         records["date"] = records.date.dt.strftime("%Y-%m-%d")
-        st.dataframe(records, hide_index=True, use_container_width=True)
+        st.dataframe(records, hide_index=True, width="stretch")
         st.download_button("Download cash ledger", records.to_csv(index=False),
                            file_name="sample_cash_ledger.csv", mime="text/csv")
     st.caption("This is not double-entry accounting or assurance over a real bank statement.")
