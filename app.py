@@ -39,25 +39,21 @@ st.markdown('<div class="neon-hero"><span class="eyebrow">BUSINESS INTELLIGENCE 
 overview_left, overview_right = st.columns([1.12, 1])
 with overview_left:
     st.markdown(
-        '<div class="neon-overview"><div class="eyebrow">START HERE / THE STORY</div>'
-        '<h3>What is Dollars &amp; Devices?</h3>'
-        '<p>This is an interactive <b>business analyst portfolio dashboard</b> that asks a simple question: '
-        'Can an organization run efficiently while managing retired technology responsibly? '
-      st.markdown(
         '<div class="neon-overview"><div class="eyebrow">PROJECT BRIEF / START HERE</div>'
         '<h3>Can operating costs and device recovery be measured reliably?</h3>'
-        '<p>A junior Business Analyst case study showing how raw records become useful management decisions. '
-        'The central case compares <b>six fictional bank-labelled operating profiles</b> over two sample quarters. '
-        'The separate cash-controls lab tests reconciliation and budget exceptions with invented household transactions. '
-        'Start with the KPIs, open <b>KPI proof</b> to check every calculation, and use the scorecards to examine exceptions. '
-        'No sample figure represents actual company performance.</p>'
-        '<div class="overview-chips"><span>Scope the question</span><span>Reconcile inputs</span>'
-        '<span>Explain exceptions</span><span>Recommend next steps</span></div></div>',
+        '<p>A junior Business Analyst case study that shows how fictional source records become '
+        'management decisions. Compare expenses, profitability and retired technology across '
+        'six invented institutional profiles and two periods. Then open KPI proof to verify the '
+        'calculations and Cash controls to test a separate fictional household ledger. '
+        '<b>This is not actual bank reporting or financial advice.</b></p>'
+        '<div class="overview-chips"><span>Define the measure</span>'
+        '<span>Check the data</span><span>Find an exception</span><span>Decide what to investigate</span>'
+        '</div></div>',
         unsafe_allow_html=True
     )
 with overview_right:
     st.image("assets/neon_coast.svg", use_container_width=True)
-    st.caption("Original illustrated coast visual. The numbers below are fictional, not bank reporting.")
+    st.caption("Original retro-coast illustration. Neon styling does not replace calculation evidence.")
 
 st.caption("BUILT FOR BUSINESS ANALYSIS · Finance · Operations · Technology assets · Sustainability · Strategy")
 
