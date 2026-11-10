@@ -8,6 +8,7 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
+from theme import BLUE, SLATE
 from finance_controls import budget_variance, continuity_check, load_case, reconcile
 from metric_audit import RECIPES, trace_metric, validate_dataset
 
@@ -113,7 +114,7 @@ def render_financial_controls():
                              var_name="measure", value_name="CAD")
     display["measure"] = display["measure"].map({"monthly_budget":"Budget", "amount":"Actual"})
     chart = px.bar(display, x="category", y="CAD", color="measure", barmode="group",
-                   color_discrete_map={"Budget":"#4cdce6", "Actual":"#f180b0"})
+                   color_discrete_map={"Budget":SLATE, "Actual":BLUE})
     chart.update_layout(xaxis_title="", legend_title="")
     st.plotly_chart(chart, width="stretch")
     overs = variances.loc[variances.variance > 0]
