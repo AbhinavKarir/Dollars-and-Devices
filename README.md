@@ -18,7 +18,7 @@ This project was designed to demonstrate business analysis skills useful beyond 
 | Compare & decide | Which profiles need investigation? | Cross-comparison and sensitivity assumptions |
 | Stakeholders | Who needs which question answered? | Stakeholder segmentation, process and decision framing |
 
-The coastal pink-and-turquoise design is original CSS/SVG styling. Its purpose is recognition and legibility, not proof of analytics.
+The executive reporting interface uses navy, white and royal blue, with teal for sustainability. Institution accents appear only in comparison charts. There are no corporate logos. KPI evidence and sample-data limitations remain visible.
 
 ## Try it
 
