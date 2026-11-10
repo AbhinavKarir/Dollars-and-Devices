@@ -28,7 +28,7 @@ Fictional October income is CAD 3,500, withdrawals are CAD 2,626 and opening bal
 
 ## How to explain your role honestly
 
-"I designed a simulated operations-reporting case study and worked through the KPI definitions, calculation checks, cash reconciliation, stakeholder decision questions and prototype requirements. AI-assisted code generation accelerated part of the build, so I made the logic visible and added tests to help me verify and explain it. I did not use private bank information or claim a real-world performance impact."
+"This is a simulated operations-reporting case study. It includes KPI definitions, calculation checks, cash reconciliation, stakeholder decision questions and prototype requirements. The calculations and tests are available for review. It does not use private bank information or demonstrate real-world business impact."
 
 ## Interview follow-up questions
 
