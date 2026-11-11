@@ -13,12 +13,12 @@ This project was designed to demonstrate business analysis skills useful beyond 
 
 | Screen | Business question | Demonstrated skill |
 | --- | --- | --- |
-| Overview | What changed, and where should we investigate? | KPI definitions, evidence-led narrative, weighted portfolio ratios |
+| Overview | Which exception needs attention first? | Off-target and Watch prioritization, target distance, investigation routing |
 | KPI proof | Can we independently reproduce the result? | Raw inputs, formulas, source lineage and validation register |
-| Cash controls | Does the ledger reconcile, and what is over budget? | Financial literacy, reconciliation, variance analysis and exception detection |
+| Cash Reconciliation Lab (separate case study) | Does the ledger reconcile, and what is over budget? | Financial literacy, reconciliation, variance analysis and exception detection |
 | Scorecards | Which illustrative targets are missed? | Configurable business rules and missing-baseline handling |
 | Compare & decide | Which profiles need investigation? | Cross-comparison and sensitivity assumptions |
-| Stakeholders | Who needs which question answered? | Stakeholder segmentation, process and decision framing |
+| Stakeholders | Who needs which decision and evidence? | Proposed owners, communication methods and acceptance criteria |
 
 The executive reporting interface uses navy, white and royal blue, with teal for sustainability. Institution accents appear only in comparison charts. There are no corporate logos. KPI evidence and sample-data limitations remain visible.
 
@@ -86,7 +86,7 @@ Calculations use unrounded inputs. Financial source amounts are CAD millions; ca
 | Reconciliation difference | `statement_closing - calculated_closing` | CAD, rounded to cents |
 | Budget variance | `actual_expenses - budget` | CAD, positive means over budget |
 
-Growth requires a previous observation and a nonzero prior denominator. The current sample contains consecutive quarters; the implementation compares previous available observations and does not enforce a complete quarterly calendar. A future gap must be investigated before describing its change as quarter-over-quarter.
+Growth requires consecutive YYYY-Qn quarters and a nonzero prior denominator. A missing first observation is N/A; a calendar gap or zero growth baseline is UNAVAILABLE with an explicit reason. No growth value is substituted. Rate differences also require consecutive quarters. Source financial, device and cash amounts must be finite; malformed quarter labels are rejected.
 
 ## Data Governance & Lineage
 
@@ -114,19 +114,29 @@ The current validation register evaluates **13 check definitions for each of 12 
 | Formula reconciliation (8) | Efficiency, net margin, retired mass, recycling rate, unrecycled mass, revenue growth, expense growth, recycling-rate change | Independently calculated value matches the dashboard within configured absolute/relative tolerance, both `1e-9` |
 | Integrity (5) | Non-negative retired mass; recycled mass between zero and retired mass; recycling rate between 0 and 100%; positive revenue; unique institution-quarter | PASS when the condition holds; otherwise FAIL |
 
-For the checked-in sample, the expected totals are **138 PASS, 18 N/A, 0 FAIL**. The 18 N/A results are exactly **6 institutions × 3 baseline-dependent formulas** in **2026-Q1**: revenue growth, expense growth and recycling-rate change. Q1 has no earlier observation. Those values remain missing rather than being invented as zero. Q2 has a baseline and all eight formulas are checked. Unexpected missing formula values are FAIL, not N/A. Counts change when records or check definitions change.
+For the checked-in sample, the expected totals are **138 PASS, 18 N/A, 0 FAIL**. The 18 N/A results are exactly **6 institutions × 3 baseline-dependent formulas** in **2026-Q1**: revenue growth, expense growth and recycling-rate change. Q1 has no earlier observation. Those values remain missing rather than being invented as zero. Q2 has a baseline and all eight formulas are checked. Unexpected missing formula values are FAIL, not N/A. A missing comparison specifically explained by a calendar gap or zero denominator is UNAVAILABLE rather than PASS or FAIL; the reason is retained in the register. Counts change when records or check definitions change.
 
 ### Thresholds and exception handling
 
 Business performance and data validity have different meanings:
 
 - **On target / Watch / Off target:** illustrative performance classifications. `target`, `direction` and `watch_limit` define the boundaries explicitly in the configuration. For efficiency, `<=55%` is On target, `>55%` through `57%` is Watch, and `>57%` is Off target. For recycling, `>=85%` is On target, `82%` through `<85%` is Watch, and `<82%` is Off target. Boundary equality belongs to Watch at the watch limit. These are case-study assumptions, not bank-approved limits.
-- **PASS / FAIL / N/A:** formula or integrity results. Formula comparison uses the configured numeric tolerances; integrity conditions are exact comparisons. No baseline is an expected limitation, not a performance failure.
+- **PASS / FAIL / N/A / UNAVAILABLE:** formula or integrity results. Formula comparison uses the configured numeric tolerances; integrity conditions are exact comparisons. No baseline is an expected limitation, not a performance failure.
 - **Cash controls:** reconciliation compares statement closing with calculated closing, rounded to cents; a nonzero cent difference fails. The artificial CAD 25 mismatch is a deliberate test. Continuity compares adjacent statement balances with a CAD 0.005 tolerance. These cash checks are separate from the 156-result KPI register.
 
 The input loader rejects missing columns/values, duplicate keys, non-numeric amounts, invalid sample signs, nonpositive ratio denominators and unmatched finance/device records before the dashboard renders. For a later FAIL, inspect the source row and join keys, reproduce the formula, correct the source or code with evidence, and rerun tests before relying on the affected KPI. Off-target performance calls for investigation of business drivers rather than editing data to make it pass. The prototype displays validation results but does not implement an enterprise quarantine, approval or incident-management workflow.
 
-Missing-baseline handling does not cover every possible data issue. Calendar gaps, zero prior growth denominators, external source verification and production access controls require further work before production use. Changes to sample data or thresholds should be reviewed through a versioned Git change and the automated checks rerun.
+Period-gap and zero-baseline handling does not establish complete data quality. External source verification, robust financial domain modelling, large-dataset performance and production access controls require further work before production use. Changes to sample data or thresholds should be reviewed through a versioned Git change and the automated checks rerun.
+
+## Decision workflow and case-study scope
+
+Choose **Operations & Device Reporting** or **Cash Reconciliation Lab** in the sidebar. Their datasets are independent; institution and quarter filters are shown only for operations. The cash lab demonstrates the same validation and communication methods on a separate household example.
+
+The operations overview prioritizes Off target, then Watch, then unavailable comparisons. Ties follow the configured metric order rather than comparing unrelated units. Scorecards show actual-minus-target distance and the exact Watch interval. The overview, scorecards, comparison reference lines, decision signals and worked example all read their targets from the configuration. The residual arithmetic illustration and weighted portfolio measures are optional detail rather than executive headlines.
+
+Compare & Decide includes a **hypothetical CIBC 2026-Q1 investigation walkthrough**: an observed synthetic recovery KPI, competing explanations, requested source evidence, proposed owner, acceptance criteria and a conditional outcome. It does not claim interviews, source documents that do not exist, a confirmed root cause or a delivered improvement. The stakeholder plan maps decisions to evidence and communication methods without invented power/interest ratings.
+
+Metric cards wrap at smaller viewport widths. Tab navigation remains horizontally scrollable when space is limited. Full source tables and CSV exports remain available for detail.
 
 ## What this proves and what it cannot prove
 

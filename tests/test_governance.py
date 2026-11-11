@@ -37,7 +37,7 @@ class GovernanceTests(unittest.TestCase):
             for value, expected in ((entry["target"], "On target"),
                                     (entry["watch_limit"], "Watch"),
                                     (entry["watch_limit"] + sign * .01, "Off target"),
-                                    (float("nan"), "No baseline")):
+                                    (float("nan"), "Unavailable: Missing value")):
                 with self.subTest(metric=entry["metric"], value=value):
                     score = make_scorecard({entry["metric"]: value}, [entry])
                     self.assertEqual(score.iloc[0]["Status"], expected)

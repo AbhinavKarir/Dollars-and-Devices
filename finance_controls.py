@@ -6,6 +6,7 @@ accounting system, nor a view of the portfolio owner's actual finances.
 from __future__ import annotations
 
 from pathlib import Path
+from math import isfinite
 
 import pandas as pd
 
@@ -53,6 +54,10 @@ def load_case(directory: str | Path | None = None):
     budgets["monthly_budget"] = pd.to_numeric(budgets["monthly_budget"], errors="raise")
     for key in ("opening_balance", "statement_closing_balance"):
         statements[key] = pd.to_numeric(statements[key], errors="raise")
+    if not all(series.map(isfinite).all() for series in (
+        ledger["amount"], budgets["monthly_budget"], statements["opening_balance"], statements["statement_closing_balance"]
+    )):
+        raise ValueError("All cash-control amounts must be finite numbers.")
     if (ledger.amount <= 0).any() or (budgets.monthly_budget < 0).any():
         raise ValueError("Amounts must be positive; budgets cannot be negative.")
     if set(ledger.month) != set(statements.month):
@@ -112,3 +117,4 @@ def continuity_check(statements: pd.DataFrame) -> bool:
                - float(statement_rows.loc[i - 1, "statement_closing_balance"])) > 0.005:
             return False
     return True
+

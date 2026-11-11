@@ -2,8 +2,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from analytics import load_metrics, load_targets, make_scorecard, portfolio_summary, scenario, story_cards
-from theme import BANK_COLOURS, BLUE, TEAL, SLATE, apply_theme
+from analytics import load_metrics, load_targets, make_scorecard, portfolio_summary, scenario
+from theme import BANK_COLOURS, TEAL, SLATE, apply_theme
 from evidence_views import render_kpi_workbench, render_financial_controls
 
 st.set_page_config(page_title="Dollars & Devices | Operations Reporting", page_icon="D", layout="wide")
@@ -13,18 +13,25 @@ apply_theme()
 def load_data():
     return load_metrics()
 
+with st.sidebar:
+    st.title("Dollars & Devices")
+    case = st.radio("Case study", ["Operations & Device Reporting", "Cash Reconciliation Lab"])
+    if case == "Cash Reconciliation Lab":
+        st.caption("Separate fictional household dataset. Institution and quarter filters do not apply.")
+if case == "Cash Reconciliation Lab":
+    st.title("Cash Reconciliation Lab")
+    render_financial_controls()
+    st.stop()
 try:
     df = load_data()
     targets = load_targets()
 except (ValueError, KeyError, FileNotFoundError) as error:
     st.error(str(error))
     st.stop()
-
 with st.sidebar:
-    st.title("Dollars & Devices")
-    st.caption("Reporting scope")
+    st.caption("Operations reporting scope")
     bank = st.selectbox("Institution", sorted(df.bank.unique()))
-    quarters = sorted(df.quarter.unique())
+    quarters = sorted(df.loc[df.bank == bank, "quarter"].unique())
     quarter = st.selectbox("Quarter", quarters, index=len(quarters) - 1)
     st.info("Synthetic case study. Institution names are comparison labels only; figures are fictional and there is no bank affiliation.")
 
@@ -35,64 +42,78 @@ prev = earlier.iloc[-1] if not earlier.empty else None
 current = df[df.quarter == quarter]
 
 st.markdown('<div class="report-header"><div class="eyebrow">BUSINESS ANALYST PORTFOLIO</div>'
-            '<h1>Dollars &amp; Devices</h1><p>Operations, performance reporting &amp; controls</p>'
+            '<h1>Dollars &amp; Devices</h1><p>Operations &amp; Device Reporting</p>'
             '<span class="sample-label">SYNTHETIC DATA · DEMONSTRATION ONLY</span></div>', unsafe_allow_html=True)
 with st.expander("Case brief and reporting scope", expanded=False):
     st.write("Business question: can operating costs and device recovery be measured reliably? "
              "This case study compares six fictional institutional profiles across two periods, "
              "traces KPIs to source records, and links exceptions to proposed investigations. "
-             "Cash Controls uses a separate fictional household ledger. "
+             "The Cash Reconciliation Lab uses a separate fictional household ledger. "
              "This is not actual bank reporting or financial advice.")
 
 st.caption(f"FOCUS: {bank} | {quarter} | Currency: CAD millions | Devices: kilograms")
-tabs = st.tabs(["Overview", "KPI Proof", "Cash Controls", "Scorecards", "Compare & Decide", "Stakeholders"])
+tabs = st.tabs(["Overview", "KPI Proof", "Scorecards", "Compare & Decide", "Stakeholders"])
+
+entries = targets["financial"] + targets["devices"]
+rules = {entry["metric"]: entry for entry in entries}
+scores = make_scorecard(row, entries)
+cost_target = rules["efficiency_ratio"]["target"]
+recovery_target = rules["recycling_rate"]["target"]
+
+def exception_summary(frame):
+    ranked = frame.copy()
+    ranked["priority"] = ranked.Status.map({"Off target": 0, "Watch": 1, "No baseline": 2, "On target": 4}).fillna(2)
+    return ranked.sort_values("priority", kind="stable").iloc[0]
 
 with tabs[0]:
-    st.header("Executive summary")
-    cost_signal = "above" if row.efficiency_ratio > 55 else "within"
-    recovery_signal = "below" if row.recycling_rate < 85 else "at or above"
-    st.write(f"{bank} reports an expense-to-revenue ratio of {row.efficiency_ratio:.1f}% "
-             f"({cost_signal} the illustrative 55% limit) and a recycling rate of "
-             f"{row.recycling_rate:.1f}% ({recovery_signal} the illustrative 85% target). "
-             "Next: verify source calculations in KPI Proof, then review expense categories "
-             "and recycler receipts with the proposed owners in Compare & Decide.")
+    st.header("Where to focus next")
+    lead = exception_summary(scores)
+    off = int((scores.Status == "Off target").sum())
+    watch = int((scores.Status == "Watch").sum())
+    st.caption(f"{bank} | {quarter} | {off} off target, {watch} on watch | Illustrative thresholds")
+    if lead["Status"] in {"Off target", "Watch"}:
+        distance_unit = "percentage points" if lead["Unit"] == "%" else lead["Unit"]
+        st.subheader(f"{lead['Metric']}: {lead['Status']}")
+        st.write(f"{lead['Value']:.1f}{lead['Unit']}, {abs(lead['Distance from target']):.1f} {distance_unit} "
+                 f"from the {lead['Target']:.1f}{lead['Unit']} target. {lead['Why it matters']}.")
+        st.write("**Next step:** Review the exceptions below, verify the inputs in KPI Proof, and use Compare & Decide to plan the investigation.")
+    elif lead["Status"] != "On target":
+        st.info("Some comparisons are unavailable. Review their reasons before drawing conclusions about growth.")
+    else:
+        st.success("All available scorecard measures are on target. Continue monitoring and verify source evidence.")
+
     cols = st.columns(4)
-    items = [("Efficiency ratio ↓", "efficiency_ratio", True), ("Net income margin ↑", "net_margin", False), ("Recycling rate ↑", "recycling_rate", False)]
-    for i, (label, metric, inverse) in enumerate(items):
-        delta = None if prev is None else f"{row[metric] - prev[metric]:+.1f} pp"
-        cols[i].metric(label, f"{row[metric]:.1f}%", delta, delta_color="inverse" if inverse else "normal")
-    cols[3].metric("Retired devices", f"{row.retired_kg:,.0f} kg")
-    st.caption("Ratio changes are percentage points versus the previous available quarter. Lower expense ratios and higher margins/recovery rates are favourable.")
-    st.subheader("Revenue allocation")
-    st.dataframe(pd.DataFrame({
-        "Component": ["Tracked expenses", "Net income", "Other / unreconciled"],
-        "Cents per CAD 1 of revenue": [row.efficiency_ratio, row.net_margin, row.residual_cents],
-    }).round(2), hide_index=True, width="stretch")
-    st.caption("Arithmetic illustration only. Other / unreconciled is the residual, not a verified accounting category; this is not an audited accounting bridge.")
-    st.subheader("Combined six-institution sample portfolio")
-    summary = portfolio_summary(df, quarter)
-    x, y, z = st.columns(3)
-    x.metric("Weighted efficiency", f"{summary['efficiency_ratio']:.1f}%")
-    y.metric("Weighted margin", f"{summary['net_margin']:.1f}%")
-    z.metric("Weighted recycling", f"{summary['recycling_rate']:.1f}%")
-
-    st.divider()
-    st.subheader("What the sample data tells us")
-    st.caption("Rules produce these observations directly from the numbers. Drivers still need investigation.")
-    for entry in story_cards(row):
-        st.markdown(
-            '<div class="insight-panel ' + ("sustainability" if entry["accent"] == "violet" else "reporting") + '">'
-            '<div class="eyebrow">' + entry["eyebrow"] + '</div>'
-            '<h3>' + entry["headline"] + '</h3><p>' + entry["body"] + '</p></div>',
-            unsafe_allow_html=True
-        )
-
+    for i, (label, metric, change) in enumerate([
+        ("Efficiency", "efficiency_ratio", "efficiency_pp_change"),
+        ("Net margin", "net_margin", "margin_pp_change"),
+        ("Recycling", "recycling_rate", "recycling_pp_change"),
+    ]):
+        reason = row[change + "_reason"]
+        delta = None if reason else f"{row[change]:+.1f} pp"
+        cols[i].metric(label, f"{row[metric]:.1f}%", delta,
+                       delta_color="inverse" if metric == "efficiency_ratio" else "normal",
+                       help=(reason or "Change from the immediately preceding quarter") + ". pp = percentage points.")
+    cols[3].metric("Retired mass", f"{row.retired_kg:,.0f} kg")
+    st.caption("Changes compare consecutive quarters only. Missing comparisons are not zero. Hover over a metric for its comparison context.")
+    exceptions = scores.loc[scores.Status != "On target", ["Metric", "Value", "Unit", "Target", "Watch limit", "Status"]]
+    if not exceptions.empty:
+        st.subheader("Exceptions and unavailable comparisons")
+        st.dataframe(exceptions.round(2), hide_index=True, width="stretch")
+    with st.expander("Combined sample portfolio and calculation illustration"):
+        st.caption("Weighted ratios across all six fictional profiles; not a peer benchmark for real institutions.")
+        summary = portfolio_summary(df, quarter)
+        x, y, z = st.columns(3)
+        x.metric("Weighted efficiency", f"{summary['efficiency_ratio']:.1f}%")
+        y.metric("Weighted margin", f"{summary['net_margin']:.1f}%")
+        z.metric("Weighted recycling", f"{summary['recycling_rate']:.1f}%")
+        st.dataframe(pd.DataFrame({
+            "Component": ["Tracked expenses", "Net income", "Unexplained arithmetic residual"],
+            "Cents per CAD 1 of revenue": [row.efficiency_ratio, row.net_margin, row.residual_cents],
+        }).round(2), hide_index=True, width="stretch")
+        st.caption("The residual is an arithmetic illustration, not a verified accounting category or an audited bridge.")
 
 with tabs[1]:
     render_kpi_workbench(df, bank, quarter)
-
-with tabs[2]:
-    render_financial_controls()
 
 
 def display_scorecard(frame):
@@ -100,10 +121,13 @@ def display_scorecard(frame):
     for entry in frame.to_dict("records"):
         status = str(entry["Status"])
         badge = {"On target": "good", "Watch": "watch", "Off target": "bad"}.get(status, "missing")
-        measure = "No baseline" if pd.isna(entry["Value"]) else f'{entry["Value"]:.1f}{entry["Unit"]}'
+        measure = "Unavailable" if pd.isna(entry["Value"]) else f'{entry["Value"]:.1f}{entry["Unit"]}'
         sign = "≤" if entry["Direction"] == "lower" else "≥"
+        gap_unit = "pp" if entry["Unit"] == "%" else entry["Unit"]
+        gap = "Comparison unavailable" if pd.isna(entry["Value"]) else f"Distance from target: {entry['Distance from target']:+.1f} {gap_unit} (actual minus target)"
+        watch_rule = f"{entry['Target']:g} < value ≤ {entry['Watch limit']:g}" if entry["Direction"] == "lower" else f"{entry['Watch limit']:g} ≤ value < {entry['Target']:g}"
         st.markdown(
-            '<div class="score-panel">'
+            '<div class="score-panel">' 
             f'<div class="eyebrow">{entry["Perspective"]}</div>'
             '<div class="score-head">'
             f'<span class="score-title">{entry["Metric"]}</span>'
@@ -111,11 +135,11 @@ def display_scorecard(frame):
             f'<span class="score-badge {badge}">{status}</span>'
             '</div>'
             f'<div class="score-note">Sample target {sign} {entry["Target"]:.1f}{entry["Unit"]} · '
-            f'{entry["Why it matters"]}</div></div>',
+            f'Watch: {watch_rule} {entry["Unit"]}<br/>{gap}<br/>{entry["Why it matters"]}</div></div>',
             unsafe_allow_html=True,
         )
 
-with tabs[3]:
+with tabs[2]:
     st.header("Balanced scorecards")
     a, b = st.columns(2)
     with a:
@@ -128,29 +152,29 @@ with tabs[3]:
     with st.expander("See the detailed scorecard metrics"):
         st.dataframe(pd.concat([make_scorecard(row, targets["financial"]), make_scorecard(row, targets["devices"])], ignore_index=True).round(2), hide_index=True, width="stretch")
 
-with tabs[4]:
+with tabs[3]:
     st.header("Operating efficiency and device recovery")
     st.caption("Compare the selected quarter against illustrative limits. Lower expense ratios and higher recovery rates are favourable.")
     fig = px.scatter(current, x="efficiency_ratio", y="recycling_rate", size="revenue", color="bank", text="bank", color_discrete_map=BANK_COLOURS, size_max=45)
     fig.update_traces(textposition="top center")
-    fig.add_vline(x=55, line_dash="dash", line_color=SLATE)
-    fig.add_hline(y=85, line_dash="dash", line_color=TEAL)
+    fig.add_vline(x=cost_target, line_dash="dash", line_color=SLATE)
+    fig.add_hline(y=recovery_target, line_dash="dash", line_color=TEAL)
     fig.update_layout(xaxis_title="Efficiency (%) · lower is better", yaxis_title="Recycling (%) · higher is better")
     st.plotly_chart(fig, width="stretch")
     st.caption("Targets are illustrative. Bubble size indicates fictional revenue. Comparison does not establish causation.")
 
     st.subheader("Evidence → investigation → owner")
-    above_cost = float(row["efficiency_ratio"]) > 55
-    below_recovery = float(row["recycling_rate"]) < 85
+    above_cost = float(row["efficiency_ratio"]) > cost_target
+    below_recovery = float(row["recycling_rate"]) < recovery_target
     decision_rows = [
         {
-            "Observed signal": f"Expense/revenue = {row['efficiency_ratio']:.1f}% (illustrative limit 55%)",
+            "Observed signal": f"Expense/revenue = {row['efficiency_ratio']:.1f}% (illustrative limit {cost_target:g}%)",
             "Decision": "Investigate cost ratio" if above_cost else "Maintain monitoring",
             "Proposed owner": "Finance + Operations",
             "Evidence needed": "Expense categories, revenue mix, time period and approved definitions",
         },
         {
-            "Observed signal": f"Recycling = {row['recycling_rate']:.1f}% (illustrative limit 85%)",
+            "Observed signal": f"Recycling = {row['recycling_rate']:.1f}% (illustrative limit {recovery_target:g}%)",
             "Decision": "Investigate recovery evidence" if below_recovery else "Validate recorded recovery",
             "Proposed owner": "IT asset lead + Sustainability",
             "Evidence needed": "Asset register, recycler receipts, disposition categories",
@@ -169,8 +193,26 @@ with tabs[4]:
             "these explanatory variables. A real BA would document them and check with business owners."
         )
 
-    st.dataframe(current.round(2), width="stretch", hide_index=True)
+    with st.expander("Full selected-quarter data"):
+        st.dataframe(current.round(2), width="stretch", hide_index=True)
     st.download_button("Download sample quarter CSV", current.to_csv(index=False), file_name="sample_quarter.csv", mime="text/csv")
+
+    st.subheader("Worked investigation: a recovery exception")
+    st.caption("Illustrative training walkthrough using CIBC 2026-Q1. The hypotheses, proposed workflow and conditional outcome are hypothetical.")
+    example = df.loc[(df.bank == "CIBC") & (df.quarter == "2026-Q1")]
+    if not example.empty:
+        case_row = example.iloc[0]
+        observed = float(case_row.recycling_rate)
+        status = make_scorecard(case_row, [rules["recycling_rate"]]).iloc[0]["Status"]
+        st.write(f"**Observed evidence:** {case_row.recycled_kg:,.0f} kg recorded recycled / {case_row.retired_kg:,.0f} kg retired "
+                 f"= {observed:.2f}%. Configured target: {recovery_target:g}%; status: {status}. "
+                 f"Distance from target: {observed - recovery_target:+.2f} percentage points. The investigation is needed only when the configured target is missed.")
+        st.write("**Question:** Is the apparent shortfall caused by missing evidence, reporting cut-off, classification, or genuine recovery performance?")
+        st.write("**Proposed owner:** IT asset manager, supported by the sustainability lead. Request the asset register, recycler receipts, collection dates and disposition codes.")
+        st.write("**Competing explanations:** A receipt arrived after the reporting cut-off; a reused device was classified separately; or material was genuinely not recovered. None is established by this dataset.")
+        st.write("**Investigation steps:** Match device batches to receipts, check dates and duplicates, classify unmatched mass, then recalculate under an agreed definition. Record the evidence and unresolved exceptions.")
+        st.write("**Acceptance criteria:** Every reported mass total traces to a source; duplicate batches are excluded; timing and classification rules are documented; the agreed calculation reproduces the KPI; the proposed owner records a review decision.")
+        st.write("**Hypothetical outcome:** If late receipts explain the shortfall, correct the cut-off process and rerun the KPI after evidence review. If the shortfall remains, propose a vendor review. No improvement or completed business outcome is claimed.")
 
     st.divider()
     st.header("Scenario sensitivity")
@@ -186,27 +228,21 @@ with tabs[4]:
     d.metric("Additional recycled", f"{s['additional_recycled_kg']:,.0f} kg")
     st.warning("Sensitivity only, not a forecast. Revenue and retired mass are fixed. Savings do not automatically change net income.")
 
-with tabs[5]:
-    st.header("Stakeholder lens")
-    people = {
-        "Finance director": ("How can we improve expense conversion?", "efficiency_ratio", "Financial KPI review"),
-        "Operations manager": ("What is driving device retirements?", "retired_kg", "Operations workshop"),
-        "Sustainability lead": ("Is the recovery rate improving?", "recycling_rate", "Vendor evidence review"),
-        "IT asset manager": ("Which device types need attention?", "laptops_kg", "IT asset inventory"),
-        "Executive sponsor": ("Where should leadership invest attention?", "net_margin", "Executive briefing")
-    }
-    role = st.selectbox("Select stakeholder", list(people))
-    question, metric, meeting = people[role]
-    st.write("**Business question:** " + question)
-    st.write("**Engagement approach:** " + meeting)
-    st.metric(metric.replace("_", " ").title(), f"{row[metric]:,.1f}")
-    power = pd.DataFrame({"Stakeholder":list(people), "Power":[5,4,4,3,5], "Interest":[5,4,5,4,4]})
-    graphic = px.scatter(power, x="Interest", y="Power", text="Stakeholder", color_discrete_sequence=[BLUE])
-    graphic.update_traces(marker_size=17, textposition="top center")
-    graphic.update_xaxes(range=[0,6])
-    graphic.update_yaxes(range=[0,6])
-    st.plotly_chart(graphic, width="stretch")
-    st.caption("Stakeholder positions are fictional examples.")
+with tabs[4]:
+    st.header("Who needs what information?")
+    st.caption("Proposed roles and engagement approaches for this fictional case study. No actual interviews or approvals are claimed.")
+    stakeholder_rows = [
+        {"Proposed owner": "Finance + Operations", "Decision": "Investigate an adverse efficiency ratio", "Evidence needed": "Expense categories, revenue mix, approved KPI definitions", "Communication": "Variance briefing, then a driver review", "Acceptance": "Reproduce the ratio and agree which driver to investigate"},
+        {"Proposed owner": "IT asset manager", "Decision": "Validate recorded device retirements", "Evidence needed": "Asset IDs, retirement dates, device categories", "Communication": "Asset-register walkthrough and exception log", "Acceptance": "Retired totals trace to source records"},
+        {"Proposed owner": "Sustainability lead", "Decision": "Validate recovery classification", "Evidence needed": "Recycler receipts and disposition categories", "Communication": "Evidence review with IT and the vendor", "Acceptance": "Recycled mass is supported and not double counted"},
+        {"Proposed owner": "Executive sponsor", "Decision": "Prioritize a bounded investigation", "Evidence needed": "Validated signal, options, uncertainty and proposed owner", "Communication": "One-page decision brief", "Acceptance": "Agree scope, owner and review date; do not assert a root cause"},
+    ]
+    for person in stakeholder_rows:
+        with st.expander(person["Proposed owner"], expanded=person == stakeholder_rows[0]):
+            for field in ("Decision", "Evidence needed", "Communication", "Acceptance"):
+                st.write(f"**{field}:** {person[field]}")
+    st.download_button("Download stakeholder communication plan", pd.DataFrame(stakeholder_rows).to_csv(index=False),
+                       file_name="sample_stakeholder_plan.csv", mime="text/csv")
 
 st.divider()
-st.caption("DOLLARS & DEVICES | Junior BA case study: operations reporting and controls | Synthetic data, no real-bank findings.")
+st.caption("DOLLARS & DEVICES | Junior BA case study | Synthetic data, no real-bank findings.")

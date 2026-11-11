@@ -5,9 +5,9 @@ NOT external audits of the fictional institutions or their performance.
 """
 from __future__ import annotations
 
-from math import isclose
+from math import isclose, isfinite
 import pandas as pd
-from analytics import load_targets
+from analytics import load_targets, comparison_reason
 
 VALIDATION = load_targets()["validation"]
 BASELINE_METRICS = {"revenue_growth_pct", "expense_growth_pct", "recycling_pp_change"}
@@ -102,12 +102,12 @@ def independent_value(row: pd.Series, metric: str, previous: pd.Series | None = 
     if metric == "unrecycled_kg":
         return independent_value(row, "retired_kg") - float(row["recycled_kg"])
     if metric in {"revenue_growth_pct", "expense_growth_pct"}:
-        if previous is None:
+        if comparison_reason(row, metric, previous):
             return float("nan")
         key = "revenue" if metric == "revenue_growth_pct" else "expenses"
         return 100 * (float(row[key]) / float(previous[key]) - 1)
     if metric == "recycling_pp_change":
-        if previous is None:
+        if comparison_reason(row, metric, previous):
             return float("nan")
         return independent_value(row, "recycling_rate") - independent_value(previous, "recycling_rate")
     raise KeyError(f"Unknown audit metric: {metric}")
@@ -116,14 +116,18 @@ def independent_value(row: pd.Series, metric: str, previous: pd.Series | None = 
 def trace_metric(row: pd.Series, metric: str, previous: pd.Series | None = None) -> dict:
     """Explain a selected KPI from its sources and cross-check stored value."""
     recipe = RECIPES[metric]
-    calculated = independent_value(row, metric, previous)
+    try:
+        calculated = independent_value(row, metric, previous)
+    except (ZeroDivisionError, ValueError):
+        calculated = float("nan")
     cached = row[metric]
     both_missing = pd.isna(cached) and pd.isna(calculated)
-    passed = bool(pd.notna(calculated) and pd.notna(cached) and
+    passed = bool(pd.notna(calculated) and pd.notna(cached) and isfinite(float(calculated)) and isfinite(float(cached)) and
                   isclose(float(calculated), float(cached), rel_tol=VALIDATION["formula_relative_tolerance"],
                           abs_tol=VALIDATION["formula_absolute_tolerance"]))
     expected_missing = both_missing and previous is None and metric in BASELINE_METRICS
-    status = "N/A" if expected_missing else ("PASS" if passed else "FAIL")
+    reason = comparison_reason(row, metric, previous)
+    status = ("N/A" if expected_missing else "UNAVAILABLE" if both_missing and reason else "PASS" if passed else "FAIL")
     inputs = {key: float(row[key]) for key in recipe["raw_columns"]}
     if previous is not None and (metric.endswith("_growth_pct") or metric.endswith("_pp_change")):
         inputs.update({"previous_" + key: float(previous[key]) for key in recipe["raw_columns"]})
@@ -134,6 +138,7 @@ def trace_metric(row: pd.Series, metric: str, previous: pd.Series | None = None)
         "recomputed": calculated,
         "dashboard_value": cached,
         "status": status,
+        "reason": reason,
         "baseline": "Available" if previous is not None else "Not available",
     }
 
@@ -151,7 +156,7 @@ def validate_dataset(frame: pd.DataFrame) -> pd.DataFrame:
                     "Bank": bank, "Quarter": row["quarter"],
                     "Check": f"{trace['title']} formula",
                     "Result": trace["status"],
-                    "Detail": ("No earlier quarter" if trace["status"] == "N/A" else
+                    "Detail": (trace["reason"] if trace["status"] in {"N/A", "UNAVAILABLE"} else
                                "Arithmetic reconciliation" if trace["status"] == "PASS" else
                                "Calculated result differs"),
                 })
