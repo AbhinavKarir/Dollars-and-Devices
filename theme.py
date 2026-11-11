@@ -15,7 +15,7 @@ BANK_COLOURS = {
 CSS = r"""
 <style>
 .stApp {background:#F4F6FA; color:#172B45; font-family:"Segoe UI",Arial,sans-serif;}
-.block-container {max-width:1320px; padding-top:2rem; padding-bottom:3rem;}
+.block-container {max-width:1320px; padding-top:3rem; padding-bottom:3rem;}
 h1,h2,h3 {color:#142D4E; letter-spacing:-.02em;}
 h1 {font-size:2rem!important; font-weight:700!important;}
 h2 {font-size:1.5rem!important; font-weight:650!important;}
@@ -24,8 +24,8 @@ h3 {font-size:1.15rem!important; font-weight:650!important;}
 [data-testid="stMetric"] {background:#FFFFFF; border:1px solid #D6DFEA; border-top:3px solid #2459B8; border-radius:8px; padding:18px 20px; min-height:120px;}
 [data-testid="stMetricLabel"] {color:#465A72; font-size:.85rem;}
 [data-testid="stMetricValue"] {color:#142D4E; font-variant-numeric:tabular-nums; font-weight:650;}
-[data-testid="stTabs"] [role="tablist"] {gap:4px; border-bottom:1px solid #CFD9E6; overflow-x:auto;}
-[data-testid="stTabs"] button[role="tab"] {color:#465A72; padding:10px 14px; white-space:nowrap;}
+[data-testid="stTabs"] [role="tablist"] {gap:12px; border-bottom:1px solid #CFD9E6; overflow-x:auto;}
+[data-testid="stTabs"] button[role="tab"] {color:#465A72; padding:10px 16px; white-space:nowrap;}
 [data-testid="stTabs"] button[aria-selected="true"] {color:#2459B8; font-weight:650;}
 [data-testid="stTabs"] [data-baseweb="tab-highlight"] {background:#2459B8;}
 .stButton > button, .stDownloadButton > button {background:#2459B8; color:white; border:1px solid #2459B8; border-radius:4px; font-weight:600;}
@@ -50,6 +50,16 @@ button:focus-visible, a:focus-visible {outline:3px solid #087F78!important; outl
 .score-badge.watch {color:#785000; background:#FFF0CC;}
 .score-badge.bad {color:#9B2632; background:#FBE6E8;}
 .score-badge.missing {color:#465A72; background:#EAF0F7;}
+[data-testid="stMetricLabel"] p {white-space:normal!important; overflow:visible!important;}
+[data-testid="stTabs"] [role="tablist"] {column-gap:16px;}
+@media(max-width:1100px) {
+ [data-testid="stHorizontalBlock"]:has([data-testid="stMetric"]) {flex-wrap:wrap!important;}
+ [data-testid="stColumn"]:has([data-testid="stMetric"]) {min-width:240px!important; flex:1 1 240px!important;}
+}
+@media(max-width:600px) {
+ [data-testid="stColumn"]:has([data-testid="stMetric"]) {min-width:0!important; flex:1 1 100%!important; width:100%!important;}
+ [data-testid="stMetricValue"] {font-size:1.8rem!important;}
+}
 @media(max-width:750px) {
  .block-container {padding-top:1rem; padding-left:1rem; padding-right:1rem;}
  .report-header h1 {font-size:1.7rem!important;}

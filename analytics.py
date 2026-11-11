@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 import math
+import re
 from pathlib import Path
 
 import pandas as pd
@@ -26,6 +27,10 @@ def _validate(frame: pd.DataFrame, required: set[str], label: str) -> None:
         raise ValueError(f"{label} has duplicate bank-quarter records.")
     if frame.empty or frame.isna().any().any():
         raise ValueError(f"{label} contains empty or missing values.")
+    if not frame["quarter"].astype(str).map(lambda q: bool(re.fullmatch(r"\d{4}-Q[1-4]", q))).all():
+        raise ValueError(f"{label} requires quarters in YYYY-Q1 through YYYY-Q4 format.")
+    if frame["bank"].astype(str).str.strip().eq("").any():
+        raise ValueError(f"{label} contains blank institution names.")
 
 
 def load_metrics(data_directory: str | Path | None = None) -> pd.DataFrame:
@@ -42,6 +47,8 @@ def load_metrics(data_directory: str | Path | None = None) -> pd.DataFrame:
         money[column] = pd.to_numeric(money[column], errors="raise")
     for column in device_cols:
         devices[column] = pd.to_numeric(devices[column], errors="raise")
+    if not money[money_cols].map(math.isfinite).all().all() or not devices[device_cols].map(math.isfinite).all().all():
+        raise ValueError("All sample amounts must be finite numbers.")
 
     if (money["revenue"] <= 0).any():
         raise ValueError("Revenue must be positive to calculate ratios.")
@@ -72,13 +79,44 @@ def load_metrics(data_directory: str | Path | None = None) -> pd.DataFrame:
         ("unrecycled_kg", "unrecycled_growth_pct"),
     ):
         previous = merged.groupby("bank")[source].shift()
-        merged[output] = ((merged[source] / previous) - 1) * 100
+        merged[output] = ((merged[source] / previous.where(previous != 0)) - 1) * 100
     merged["recycling_pp_change"] = merged.groupby("bank")["recycling_rate"].diff()
     merged["efficiency_pp_change"] = merged.groupby("bank")["efficiency_ratio"].diff()
     merged["margin_pp_change"] = merged.groupby("bank")["net_margin"].diff()
     merged["cost_growth_gap_pp"] = merged["expense_growth_pct"] - merged["revenue_growth_pct"]
 
+    for _, part in merged.groupby("bank"):
+        previous = None
+        for index, row in part.iterrows():
+            for metric in COMPARISON_METRICS:
+                reason = comparison_reason(row, metric, previous)
+                merged.loc[index, metric + "_reason"] = reason
+                if reason:
+                    merged.loc[index, metric] = float("nan")
+            previous = row
+
     return merged
+
+
+COMPARISON_METRICS = {
+    "revenue_growth_pct": ("revenue",), "expense_growth_pct": ("expenses",),
+    "retired_growth_pct": ("retired_kg",), "unrecycled_growth_pct": ("unrecycled_kg",),
+    "cost_growth_gap_pp": ("expenses", "revenue"),
+    "recycling_pp_change": (), "efficiency_pp_change": (), "margin_pp_change": (),
+}
+
+
+def comparison_reason(row, metric, previous):
+    """Return a reason only when a genuine quarter-over-quarter comparison is unavailable."""
+    if metric not in COMPARISON_METRICS:
+        return ""
+    if previous is None:
+        return "No earlier quarter"
+    if pd.Period(row["quarter"], freq="Q").ordinal - pd.Period(previous["quarter"], freq="Q").ordinal != 1:
+        return "Period gap"
+    if any(float(previous[key]) == 0 for key in COMPARISON_METRICS[metric]):
+        return "Zero baseline"
+    return ""
 
 
 def load_targets(path: str | Path | None = None) -> dict:
@@ -120,7 +158,11 @@ def make_scorecard(row: pd.Series, entries: list[dict]) -> pd.DataFrame:
             "Value": float(value) if pd.notna(value) else float("nan"),
             "Target": float(entry["target"]),
             "Direction": entry["direction"],
-            "Status": target_status(value, entry["target"], entry["direction"], abs(entry["watch_limit"] - entry["target"])),
+            "Status": ("Unavailable: " + (row.get(entry["metric"] + "_reason", "") or "Missing value")
+                       if pd.isna(value) and row.get(entry["metric"] + "_reason", "") != "No earlier quarter"
+                       else target_status(value, entry["target"], entry["direction"], abs(entry["watch_limit"] - entry["target"]))),
+            "Watch limit": entry["watch_limit"],
+            "Distance from target": float(value) - entry["target"] if pd.notna(value) else float("nan"),
             "Why it matters": entry["why"],
             "Unit": entry["unit"],
         })
@@ -155,7 +197,7 @@ def scenario(row: pd.Series, expense_cut_pct: float, recycling_lift_pp: float) -
     }
 
 
-def story_cards(row: pd.Series) -> list[dict]:
+def story_cards(row: pd.Series, targets: dict | None = None) -> list[dict]:
     """Rule-based language: every caption refers to actual sample metrics."""
     bank, quarter = str(row["bank"]), str(row["quarter"])
     cost = float(row["efficiency_ratio"])
@@ -171,10 +213,11 @@ def story_cards(row: pd.Series) -> list[dict]:
         effect = "favourable" if (value < 0 if lower_is_better else value > 0) else "unfavourable"
         return f"{trend.capitalize()} {abs(value):.1f} percentage points since the previous quarter ({effect})."
 
-    if cost <= 55:
+    cost_target = next(e for e in (targets or load_targets())["financial"] if e["metric"] == "efficiency_ratio")["target"]
+    if cost <= cost_target:
         recommendation = "Cost conversion is within the illustrative target. Investigate which operating practices can be sustained."
     else:
-        recommendation = "Cost conversion is above the illustrative 55% threshold. Review expense drivers before proposing reductions."
+        recommendation = f"Cost conversion is above the illustrative {cost_target:g}% threshold. Review expense drivers before proposing reductions."
 
     return [
         {

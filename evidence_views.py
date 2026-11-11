@@ -40,8 +40,8 @@ def render_kpi_workbench(data, bank, quarter):
     st.write("Analyst follow-up:", trace["decision"])
     if trace["status"] == "FAIL":
         st.error("Formula mismatch. Do not use this result without correcting its source.")
-    elif trace["status"] == "N/A":
-        st.info("No previous quarter exists. The comparison is not applicable.")
+    elif trace["status"] in {"N/A", "UNAVAILABLE"}:
+        st.info("Comparison unavailable: " + trace["reason"] + ". No zero or growth value has been substituted.")
     else:
         st.success("Independent calculation matches the stored metric.")
 
@@ -50,11 +50,13 @@ def render_kpi_workbench(data, bank, quarter):
     st.caption("These are checks against synthetic data, not an audit of real bank disclosures.")
     checks = validate_dataset(data)
     totals = checks.Result.value_counts()
-    x, y, z, w = st.columns(4)
+    x, y, z, w, u = st.columns(5)
     x.metric("Total checks", len(checks))
     y.metric("Passed", int(totals.get("PASS", 0)))
     z.metric("Failed", int(totals.get("FAIL", 0)))
     w.metric("N/A", int(totals.get("N/A", 0)))
+    u.metric("Unavailable", int(totals.get("UNAVAILABLE", 0)))
+    st.caption("N/A means no earlier quarter. Unavailable means a period gap or zero growth baseline; inspect the reason in the register.")
     exceptions_only = st.toggle("Show only failures and unavailable comparisons")
     subset = checks.loc[checks.Result != "PASS"] if exceptions_only else checks
     st.dataframe(subset, hide_index=True, width="stretch")
@@ -136,3 +138,4 @@ def render_financial_controls():
         st.download_button("Download cash ledger", records.to_csv(index=False),
                            file_name="sample_cash_ledger.csv", mime="text/csv")
     st.caption("This is not double-entry accounting or assurance over a real bank statement.")
+

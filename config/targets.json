@@ -95,13 +95,14 @@
       "watch": "watch_limit <= value < target",
       "off_target": "value < watch_limit"
     },
-    "missing": "No baseline; do not substitute zero or classify as Off target",
+    "missing": "No baseline only for no earlier quarter; gaps and zero baselines are Unavailable with a reason. Unexpected missing values are Unavailable: Missing value.",
     "watch_limit_unit": "Same unit as the metric; differences between percentage rates are percentage points."
   },
   "validation": {
     "formula_relative_tolerance": 1e-09,
     "formula_absolute_tolerance": 1e-09,
     "expected_na": "Only first-observation revenue growth, expense growth and recycling-rate change without an earlier baseline.",
-    "failure_action": "Investigate source records and calculation lineage before relying on the affected KPI."
+    "failure_action": "Investigate source records and calculation lineage before relying on the affected KPI.",
+    "unavailable": "Consecutive-quarter comparisons only; a period gap or zero growth baseline is UNAVAILABLE with an explicit reason, not a fabricated growth value."
   }
 }
