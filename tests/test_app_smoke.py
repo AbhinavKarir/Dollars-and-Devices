@@ -22,7 +22,9 @@ class DashboardSmokeTests(unittest.TestCase):
         text = "\n".join(element.value for element in app.markdown)
         self.assertIn("40.0% target", text)
         self.assertIn("40 < value ≤ 42", text)
-        self.assertIn("illustrative limit 40%", text)
+        decisions = next(frame.value for frame in app.dataframe if "Observed signal" in frame.value.columns)
+        self.assertIn("illustrative limit 40%", decisions.iloc[0]["Observed signal"])
+        self.assertIn("illustrative limit 95%", decisions.iloc[1]["Observed signal"])
         self.assertIn("Configured target: 95%", text)
 
     def test_reporting_controls_survive_filter_changes(self):
