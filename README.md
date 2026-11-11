@@ -38,9 +38,9 @@ A GitHub Actions workflow file also describes compile and unit-test checks. **Ch
 
 ## Worked examples
 
-**Synthetic RBC 2026-Q2 recovery:** 4,000 kg desktops + 2,800 kg ATM terminals + 3,300 kg laptops = 10,100 kg retired; 9,100 kg recycled Ã· 10,100 kg retired Ã— 100 = **90.10%**. KPI proof exposes the inputs, calculation and an independent comparison against the dashboard result.
+**Synthetic RBC 2026-Q2 recovery:** 4,000 kg desktops + 2,800 kg ATM terminals + 3,300 kg laptops = 10,100 kg retired; 9,100 kg recycled ÷ 10,100 kg retired × 100 = **90.10%**. KPI proof exposes the inputs, calculation and an independent comparison against the dashboard result.
 
-**Synthetic October cash control:** Opening balance CAD 3,518 + deposits CAD 3,500 âˆ’ withdrawals CAD 2,626 = **CAD 4,392**, equal to the separately stored sample statement. A CAD 25 artificial mismatch shows how the control flags an exception. Groceries are CAD 25 over their sample budget; dining CAD 32 over. A ledger can reconcile while spending remains over budget.
+**Synthetic October cash control:** Opening balance CAD 3,518 + deposits CAD 3,500 − withdrawals CAD 2,626 = **CAD 4,392**, equal to the separately stored sample statement. A CAD 25 artificial mismatch shows how the control flags an exception. Groceries are CAD 25 over their sample budget; dining CAD 32 over. A ledger can reconcile while spending remains over budget.
 
 ## Business analysis artefacts
 
@@ -136,7 +136,7 @@ Does not prove: real banking analysis, audited financial accuracy, genuine perso
 
 ## Positioning for Canadian junior BA roles
 
-The intended profile is **Junior Business Analyst â€“ Operations, Performance Reporting and Controls**, not accountant, senior financial analyst or audit professional. Match this portfolio with your own genuine experience in market research, Excel-based tracking, stakeholder coordination and project/operations work.
+The intended profile is **Junior Business Analyst – Operations, Performance Reporting and Controls**, not accountant, senior financial analyst or audit professional. Match this portfolio with your own genuine experience in market research, Excel-based tracking, stakeholder coordination and project/operations work.
 
 **Example resume bullet (only claim work you can personally demonstrate):**  
 "Developed a business analysis portfolio prototype with Python, pandas, Streamlit, Plotly and SQLite to demonstrate KPI definitions, synthetic data reconciliation, reporting controls and requirements documentation."

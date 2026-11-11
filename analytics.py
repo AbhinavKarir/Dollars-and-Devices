@@ -179,14 +179,14 @@ def story_cards(row: pd.Series) -> list[dict]:
     return [
         {
             "eyebrow": "ISSUE 01 / OPERATING EFFICIENCY",
-            "headline": f"{bank}: {cost:.1f}Â¢ of each dollar goes to tracked expenses",
+            "headline": f"{bank}: {cost:.1f}¢ of each dollar goes to tracked expenses",
             "body": f"In {quarter}, the sample cost-to-revenue ratio is {cost:.1f}%. {movement(row['efficiency_pp_change'], True)}",
             "accent": "pink",
         },
         {
             "eyebrow": "ISSUE 02 / VALUE CREATION",
             "headline": f"Net margin lands at {margin:.1f}%",
-            "body": f"Modelled net income accounts for {margin:.1f}Â¢ of each revenue dollar. {movement(row['margin_pp_change'], False)}",
+            "body": f"Modelled net income accounts for {margin:.1f}¢ of each revenue dollar. {movement(row['margin_pp_change'], False)}",
             "accent": "blue",
         },
         {

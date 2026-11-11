@@ -158,7 +158,7 @@ def validate_dataset(frame: pd.DataFrame) -> pd.DataFrame:
             checks = {
                 "Non-negative retired asset mass": row["retired_kg"] >= 0,
                 "Recycled mass within total retired": 0 <= row["recycled_kg"] <= row["retired_kg"],
-                "Recycling rate 0â€“100%": 0 <= row["recycling_rate"] <= 100,
+                "Recycling rate 0–100%": 0 <= row["recycling_rate"] <= 100,
                 "Revenue denominator positive": row["revenue"] > 0,
                 "Unique row per quarter": (part["quarter"] == row["quarter"]).sum() == 1,
             }
