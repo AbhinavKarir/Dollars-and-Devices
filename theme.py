@@ -21,7 +21,7 @@ h1 {font-size:2rem!important; font-weight:700!important;}
 h2 {font-size:1.5rem!important; font-weight:650!important;}
 h3 {font-size:1.15rem!important; font-weight:650!important;}
 [data-testid="stSidebar"] {background:#EAF0F7; border-right:1px solid #CFD9E6;}
-[data-testid="stMetric"] {background:#FFFFFF; border:1px solid #D6DFEA; border-top:3px solid #2459B8; border-radius:5px; padding:16px; min-height:120px;}
+[data-testid="stMetric"] {background:#FFFFFF; border:1px solid #D6DFEA; border-top:3px solid #2459B8; border-radius:8px; padding:18px 20px; min-height:120px;}
 [data-testid="stMetricLabel"] {color:#465A72; font-size:.85rem;}
 [data-testid="stMetricValue"] {color:#142D4E; font-variant-numeric:tabular-nums; font-weight:650;}
 [data-testid="stTabs"] [role="tablist"] {gap:4px; border-bottom:1px solid #CFD9E6; overflow-x:auto;}
@@ -54,6 +54,7 @@ button:focus-visible, a:focus-visible {outline:3px solid #087F78!important; outl
  .block-container {padding-top:1rem; padding-left:1rem; padding-right:1rem;}
  .report-header h1 {font-size:1.7rem!important;}
  .insight-panel {padding:14px;}
+ [data-testid="stMetric"] {padding:14px 16px;}
 }
 </style>
 """
@@ -73,3 +74,4 @@ def apply_theme() -> None:
     )
     pio.templates.default = "executive"
     st.markdown(CSS, unsafe_allow_html=True)
+

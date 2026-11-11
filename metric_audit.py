@@ -7,6 +7,10 @@ from __future__ import annotations
 
 from math import isclose
 import pandas as pd
+from analytics import load_targets
+
+VALIDATION = load_targets()["validation"]
+BASELINE_METRICS = {"revenue_growth_pct", "expense_growth_pct", "recycling_pp_change"}
 
 # Each recipe specifies transparent source values, formula, and unit.
 RECIPES = {
@@ -116,8 +120,10 @@ def trace_metric(row: pd.Series, metric: str, previous: pd.Series | None = None)
     cached = row[metric]
     both_missing = pd.isna(cached) and pd.isna(calculated)
     passed = bool(pd.notna(calculated) and pd.notna(cached) and
-                  isclose(float(calculated), float(cached), rel_tol=1e-9, abs_tol=1e-9))
-    status = "N/A" if both_missing else ("PASS" if passed else "FAIL")
+                  isclose(float(calculated), float(cached), rel_tol=VALIDATION["formula_relative_tolerance"],
+                          abs_tol=VALIDATION["formula_absolute_tolerance"]))
+    expected_missing = both_missing and previous is None and metric in BASELINE_METRICS
+    status = "N/A" if expected_missing else ("PASS" if passed else "FAIL")
     inputs = {key: float(row[key]) for key in recipe["raw_columns"]}
     if previous is not None and (metric.endswith("_growth_pct") or metric.endswith("_pp_change")):
         inputs.update({"previous_" + key: float(previous[key]) for key in recipe["raw_columns"]})
@@ -152,7 +158,7 @@ def validate_dataset(frame: pd.DataFrame) -> pd.DataFrame:
             checks = {
                 "Non-negative retired asset mass": row["retired_kg"] >= 0,
                 "Recycled mass within total retired": 0 <= row["recycled_kg"] <= row["retired_kg"],
-                "Recycling rate 0–100%": 0 <= row["recycling_rate"] <= 100,
+                "Recycling rate 0â€“100%": 0 <= row["recycling_rate"] <= 100,
                 "Revenue denominator positive": row["revenue"] > 0,
                 "Unique row per quarter": (part["quarter"] == row["quarter"]).sum() == 1,
             }
@@ -163,3 +169,4 @@ def validate_dataset(frame: pd.DataFrame) -> pd.DataFrame:
                 })
             previous = row
     return pd.DataFrame(results)
+

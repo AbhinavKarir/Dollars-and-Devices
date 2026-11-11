@@ -10,3 +10,4 @@ def percent_change(old,new):
 print(percent_change(50,75))
 print(percent_change(75,50))
 print(percent_change(52.7,52.0))
+

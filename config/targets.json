@@ -6,9 +6,9 @@
       "metric": "efficiency_ratio",
       "target": 55,
       "direction": "lower",
-      "watch_band": 2,
       "unit": "%",
-      "why": "Expenses consumed per revenue dollar"
+      "why": "Expenses consumed per revenue dollar",
+      "watch_limit": 57
     },
     {
       "perspective": "Value",
@@ -16,9 +16,9 @@
       "metric": "net_margin",
       "target": 25,
       "direction": "higher",
-      "watch_band": 2,
       "unit": "%",
-      "why": "Share of revenue retained as net income"
+      "why": "Share of revenue retained as net income",
+      "watch_limit": 23
     },
     {
       "perspective": "Growth",
@@ -26,9 +26,9 @@
       "metric": "revenue_growth_pct",
       "target": 1.5,
       "direction": "higher",
-      "watch_band": 1,
       "unit": "%",
-      "why": "Quarter-on-quarter top-line movement"
+      "why": "Quarter-on-quarter top-line movement",
+      "watch_limit": 0.5
     },
     {
       "perspective": "Discipline",
@@ -36,9 +36,9 @@
       "metric": "cost_growth_gap_pp",
       "target": 0,
       "direction": "lower",
-      "watch_band": 1,
       "unit": "pp",
-      "why": "Are expenses growing faster than revenue?"
+      "why": "Are expenses growing faster than revenue?",
+      "watch_limit": 1
     }
   ],
   "devices": [
@@ -48,9 +48,9 @@
       "metric": "recycling_rate",
       "target": 85,
       "direction": "higher",
-      "watch_band": 3,
       "unit": "%",
-      "why": "Share of retired hardware mass labelled recycled"
+      "why": "Share of retired hardware mass labelled recycled",
+      "watch_limit": 82
     },
     {
       "perspective": "Progress",
@@ -58,9 +58,9 @@
       "metric": "recycling_pp_change",
       "target": 1,
       "direction": "higher",
-      "watch_band": 1,
       "unit": "pp",
-      "why": "Change in recycling rate vs the prior quarter"
+      "why": "Change in recycling rate vs the prior quarter",
+      "watch_limit": 0
     },
     {
       "perspective": "Prevention",
@@ -68,9 +68,9 @@
       "metric": "retired_growth_pct",
       "target": 3,
       "direction": "lower",
-      "watch_band": 2,
       "unit": "%",
-      "why": "Monitor retirement volume; not a standalone sustainability verdict"
+      "why": "Monitor retirement volume; not a standalone sustainability verdict",
+      "watch_limit": 5
     },
     {
       "perspective": "Residuals",
@@ -78,9 +78,30 @@
       "metric": "unrecycled_growth_pct",
       "target": 0,
       "direction": "lower",
-      "watch_band": 3,
       "unit": "%",
-      "why": "Is the un-recycled weight shrinking?"
+      "why": "Is the un-recycled weight shrinking?",
+      "watch_limit": 3
     }
-  ]
+  ],
+  "status_policy": {
+    "purpose": "Illustrative performance thresholds, not data-error thresholds or approved institutional targets.",
+    "lower": {
+      "on_target": "value <= target",
+      "watch": "target < value <= watch_limit",
+      "off_target": "value > watch_limit"
+    },
+    "higher": {
+      "on_target": "value >= target",
+      "watch": "watch_limit <= value < target",
+      "off_target": "value < watch_limit"
+    },
+    "missing": "No baseline; do not substitute zero or classify as Off target",
+    "watch_limit_unit": "Same unit as the metric; differences between percentage rates are percentage points."
+  },
+  "validation": {
+    "formula_relative_tolerance": 1e-09,
+    "formula_absolute_tolerance": 1e-09,
+    "expected_na": "Only first-observation revenue growth, expense growth and recycling-rate change without an earlier baseline.",
+    "failure_action": "Investigate source records and calculation lineage before relying on the affected KPI."
+  }
 }

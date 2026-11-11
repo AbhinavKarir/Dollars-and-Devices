@@ -31,3 +31,4 @@ print(df)
 
 df.sort_values("earnings_gap", ascending=False)
 print("Earnings gap is above 9000") if df["earnings_gap"].max() > 9000 else print("Earnings gap is below 9000")
+

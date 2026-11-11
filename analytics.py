@@ -6,6 +6,7 @@ All ratios use unrounded source data; presentation handles rounding.
 from __future__ import annotations
 
 import json
+import math
 from pathlib import Path
 
 import pandas as pd
@@ -84,7 +85,17 @@ def load_targets(path: str | Path | None = None) -> dict:
     """Keep scorecard targets separate from analytical calculations."""
     target_path = Path(path) if path else ROOT / "config" / "targets.json"
     with target_path.open(encoding="utf-8") as handle:
-        return json.load(handle)
+        config = json.load(handle)
+    for group in ("financial", "devices"):
+        for entry in config[group]:
+            direction, target, limit = entry["direction"], entry["target"], entry["watch_limit"]
+            if direction not in {"higher", "lower"} or not all(
+                isinstance(value, (int, float)) and math.isfinite(value) for value in (target, limit)
+            ):
+                raise ValueError("Targets require a valid direction and finite boundaries.")
+            if (direction == "lower" and limit < target) or (direction == "higher" and limit > target):
+                raise ValueError("Watch limit must lie on the unfavourable side of the target.")
+    return config
 
 
 def target_status(value: float, target: float, direction: str, watch_band: float) -> str:
@@ -109,7 +120,7 @@ def make_scorecard(row: pd.Series, entries: list[dict]) -> pd.DataFrame:
             "Value": float(value) if pd.notna(value) else float("nan"),
             "Target": float(entry["target"]),
             "Direction": entry["direction"],
-            "Status": target_status(value, entry["target"], entry["direction"], entry["watch_band"]),
+            "Status": target_status(value, entry["target"], entry["direction"], abs(entry["watch_limit"] - entry["target"])),
             "Why it matters": entry["why"],
             "Unit": entry["unit"],
         })
@@ -168,14 +179,14 @@ def story_cards(row: pd.Series) -> list[dict]:
     return [
         {
             "eyebrow": "ISSUE 01 / OPERATING EFFICIENCY",
-            "headline": f"{bank}: {cost:.1f}¢ of each dollar goes to tracked expenses",
+            "headline": f"{bank}: {cost:.1f}Â¢ of each dollar goes to tracked expenses",
             "body": f"In {quarter}, the sample cost-to-revenue ratio is {cost:.1f}%. {movement(row['efficiency_pp_change'], True)}",
             "accent": "pink",
         },
         {
             "eyebrow": "ISSUE 02 / VALUE CREATION",
             "headline": f"Net margin lands at {margin:.1f}%",
-            "body": f"Modelled net income accounts for {margin:.1f}¢ of each revenue dollar. {movement(row['margin_pp_change'], False)}",
+            "body": f"Modelled net income accounts for {margin:.1f}Â¢ of each revenue dollar. {movement(row['margin_pp_change'], False)}",
             "accent": "blue",
         },
         {
@@ -191,3 +202,4 @@ def story_cards(row: pd.Series) -> list[dict]:
             "accent": "gold",
         },
     ]
+

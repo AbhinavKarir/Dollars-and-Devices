@@ -1,6 +1,8 @@
+from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
 import pandas as pd
 import plotly.express as px
-df = pd.read_csv("data/processed/bank_metrics.csv")
+df = pd.read_csv((ROOT / "data/processed/bank_metrics.csv"))
 print(df.columns) 
 
 def make_line_chart(data, column, title, y_label):

@@ -1,6 +1,8 @@
+from pathlib import Path
+ROOT = Path(__file__).resolve().parents[1]
 import pandas as pd
 import plotly.express as px
-df = pd.read_csv("data/processed/bank_metrics.csv")
+df = pd.read_csv((ROOT / "data/processed/bank_metrics.csv"))
 print(df.head())
 
 avg_efficiency = df.groupby("bank")["efficiency_ratio"].mean().round(1).reset_index() #1
@@ -18,3 +20,4 @@ fig_line = px.line(df , x= "quarter", y = "efficiency_ratio", color = "bank", ma
 
 fig_line.update_layout(xaxis_title= "Quarter", yaxis_title= "Efficiency_Ratio (%)")
 fig_line.show()
+

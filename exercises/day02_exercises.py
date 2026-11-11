@@ -58,3 +58,4 @@ elif margin >= 10:
     print("Status = Can Improve")
 else:
     print("Status = Thin Margin")
+
