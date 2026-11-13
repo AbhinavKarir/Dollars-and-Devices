@@ -18,6 +18,7 @@ class DashboardSmokeTests(unittest.TestCase):
         file_path = Path(__file__).resolve().parents[1] / "app.py"
         with patch("analytics.load_targets", return_value=config):
             app = AppTest.from_file(str(file_path), default_timeout=45).run()
+            app.sidebar.radio[0].set_value("Quarterly KPI Learning Case").run()
         self.assertEqual(len(app.exception), 0)
         text = "\n".join(element.value for element in app.markdown)
         self.assertIn("40.0% target", text)
@@ -30,12 +31,13 @@ class DashboardSmokeTests(unittest.TestCase):
     def test_reporting_controls_survive_filter_changes(self):
         file_path = Path(__file__).resolve().parents[1] / "app.py"
         app = AppTest.from_file(str(file_path), default_timeout=45).run()
+        app.sidebar.radio[0].set_value("Quarterly KPI Learning Case").run()
         self.assertEqual(len(app.exception), 0)
         self.assertEqual([tab.label for tab in app.tabs], [
             "Overview", "KPI Proof", "Scorecards",
             "Compare & Decide", "Stakeholders",
         ])
-        app.sidebar.selectbox[0].select("RBC")
+        app.sidebar.selectbox[0].select("Alder Bank")
         app.sidebar.selectbox[1].select_index(0)
         next(s for s in app.selectbox if s.label == "Choose the measure to verify").select(
             "Revenue growth quarter over quarter"
@@ -52,12 +54,13 @@ class DashboardSmokeTests(unittest.TestCase):
         injection.set_value(True).run()
         self.assertEqual(len(app.exception), 0)
         self.assertTrue(any("EXPECTED CONTROL FAILURE" in error.value for error in app.error))
-        app.sidebar.radio[0].set_value("Operations & Device Reporting").run()
+        app.sidebar.radio[0].set_value("Quarterly KPI Learning Case").run()
         self.assertEqual(len(app.exception), 0)
 
     def test_app_runs_without_exception(self):
         file_path = Path(__file__).resolve().parents[1] / "app.py"
         app = AppTest.from_file(str(file_path), default_timeout=45).run()
+        app.sidebar.radio[0].set_value("Quarterly KPI Learning Case").run()
         self.assertEqual(
             len(app.exception), 0,
             "Streamlit execution error: " + "; ".join(str(e.message) for e in app.exception),

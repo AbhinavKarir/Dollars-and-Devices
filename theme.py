@@ -8,8 +8,8 @@ TEAL = "#087F78"
 SLATE = "#64748B"
 # Institution accents are used only in the cross-institution comparison chart.
 BANK_COLOURS = {
-    "RBC": "#2459B8", "TD": "#287348", "Scotiabank": "#B7353C",
-    "BMO": "#167A9C", "CIBC": "#84334E", "National Bank": "#77558B",
+    "Alder Bank": "#2459B8", "Birch Trust": "#E69F00", "Cedar Bank": "#56B4E9",
+    "Juniper Bank": "#167A9C", "Maple Harbour Bank": "#CC79A7", "Spruce Financial": "#727D8F",
 }
 
 CSS = r"""

@@ -13,8 +13,8 @@ This checklist separates code-level tests from visual and business acceptance. D
 ## Manual walkthrough
 
 - [ ] Open first screen and understand the fictional business case within 60 seconds.
-- [ ] Recompute RBC 2026-Q2 efficiency and recycling from the displayed inputs.
-- [ ] Check Scotiabank Q1/Q2 efficiency rate, and distinguish percentage points from percent change.
+- [ ] Recompute Alder Bank 2026-Q2 efficiency and recycling from the displayed inputs.
+- [ ] Check Cedar Bank Q1/Q2 efficiency rate, and distinguish percentage points from percent change.
 - [ ] Review the October cash ledger: 3518 + 3500 - 2626 = 4392.
 - [ ] Inject a deliberate CAD 25 mismatch and confirm it produces a conspicuous failure.
 - [ ] Check October groceries and dining over-budget exceptions.
@@ -24,7 +24,18 @@ This checklist separates code-level tests from visual and business acceptance. D
 
 ## Professional honesty
 
-This is an independent portfolio simulation with AI-assisted code. It is not real client engagement, audited bank finance, genuine personal finance, or a production dashboard. Discuss the assumptions and answer questions directly, especially where real stakeholder approval is still needed.
+This is a portfolio simulation, not client engagement or production reporting. Development-method disclosure is in the README. No stakeholder approval or business-user acceptance is claimed.
+
+## Asset controls manual acceptance (not yet executed by business users)
+
+- [ ] Default overview shows 110 / 120 evidence-complete assets and 11 exceptions.
+- [ ] Asset register lists missing receipt AST-0001 and duplicate evidence AST-0002.
+- [ ] All-institution exception register includes orphan AST-9999; institution-specific views exclude unassigned evidence.
+- [ ] Alder Bank filter shows 15 / 20 evidence-complete assets and five exceptions.
+- [ ] CSV export includes evidence, status, proposed owner, age and next action.
+- [ ] Resolved filter displays an explicit empty state; no persisted resolution is implied.
+- [ ] Cost finding identifies the partial cohort: CAD 3,520 vs CAD 3,300.
+- [ ] At 375 px and 200% zoom, verify headings, focus order and table access.
 
 ## Reviewer questions
 

@@ -1,0 +1,121 @@
+asset_id,institution,site_type,device_type,retired_date,expected_weight_kg,contains_data_media,disposal_budget_cad
+AST-0001,Alder Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0002,Alder Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0003,Alder Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0004,Alder Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0005,Alder Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0006,Alder Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0007,Alder Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0008,Alder Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0009,Alder Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0010,Alder Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0011,Alder Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0012,Alder Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0013,Alder Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0014,Alder Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0015,Alder Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0016,Alder Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0017,Alder Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0018,Alder Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0019,Alder Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0020,Alder Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0021,Birch Trust,Branch,Laptop,2026-04-10,2,Y,30
+AST-0022,Birch Trust,Head office,Desktop,2026-04-10,8,Y,30
+AST-0023,Birch Trust,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0024,Birch Trust,Branch,Laptop,2026-04-10,2,Y,30
+AST-0025,Birch Trust,Head office,Desktop,2026-04-10,8,Y,30
+AST-0026,Birch Trust,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0027,Birch Trust,Branch,Laptop,2026-04-10,2,Y,30
+AST-0028,Birch Trust,Head office,Desktop,2026-04-10,8,Y,30
+AST-0029,Birch Trust,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0030,Birch Trust,Branch,Laptop,2026-04-10,2,Y,30
+AST-0031,Birch Trust,Head office,Desktop,2026-04-10,8,Y,30
+AST-0032,Birch Trust,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0033,Birch Trust,Branch,Laptop,2026-04-10,2,Y,30
+AST-0034,Birch Trust,Head office,Desktop,2026-04-10,8,Y,30
+AST-0035,Birch Trust,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0036,Birch Trust,Branch,Laptop,2026-04-10,2,Y,30
+AST-0037,Birch Trust,Head office,Desktop,2026-04-10,8,Y,30
+AST-0038,Birch Trust,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0039,Birch Trust,Branch,Laptop,2026-04-10,2,Y,30
+AST-0040,Birch Trust,Head office,Desktop,2026-04-10,8,Y,30
+AST-0041,Cedar Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0042,Cedar Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0043,Cedar Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0044,Cedar Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0045,Cedar Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0046,Cedar Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0047,Cedar Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0048,Cedar Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0049,Cedar Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0050,Cedar Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0051,Cedar Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0052,Cedar Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0053,Cedar Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0054,Cedar Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0055,Cedar Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0056,Cedar Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0057,Cedar Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0058,Cedar Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0059,Cedar Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0060,Cedar Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0061,Juniper Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0062,Juniper Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0063,Juniper Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0064,Juniper Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0065,Juniper Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0066,Juniper Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0067,Juniper Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0068,Juniper Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0069,Juniper Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0070,Juniper Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0071,Juniper Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0072,Juniper Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0073,Juniper Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0074,Juniper Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0075,Juniper Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0076,Juniper Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0077,Juniper Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0078,Juniper Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0079,Juniper Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0080,Juniper Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0081,Maple Harbour Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0082,Maple Harbour Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0083,Maple Harbour Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0084,Maple Harbour Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0085,Maple Harbour Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0086,Maple Harbour Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0087,Maple Harbour Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0088,Maple Harbour Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0089,Maple Harbour Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0090,Maple Harbour Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0091,Maple Harbour Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0092,Maple Harbour Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0093,Maple Harbour Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0094,Maple Harbour Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0095,Maple Harbour Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0096,Maple Harbour Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0097,Maple Harbour Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0098,Maple Harbour Bank,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0099,Maple Harbour Bank,Branch,Laptop,2026-04-10,2,Y,30
+AST-0100,Maple Harbour Bank,Head office,Desktop,2026-04-10,8,Y,30
+AST-0101,Spruce Financial,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0102,Spruce Financial,Branch,Laptop,2026-04-10,2,Y,30
+AST-0103,Spruce Financial,Head office,Desktop,2026-04-10,8,Y,30
+AST-0104,Spruce Financial,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0105,Spruce Financial,Branch,Laptop,2026-04-10,2,Y,30
+AST-0106,Spruce Financial,Head office,Desktop,2026-04-10,8,Y,30
+AST-0107,Spruce Financial,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0108,Spruce Financial,Branch,Laptop,2026-04-10,2,Y,30
+AST-0109,Spruce Financial,Head office,Desktop,2026-04-10,8,Y,30
+AST-0110,Spruce Financial,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0111,Spruce Financial,Branch,Laptop,2026-04-10,2,Y,30
+AST-0112,Spruce Financial,Head office,Desktop,2026-04-10,8,Y,30
+AST-0113,Spruce Financial,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0114,Spruce Financial,Branch,Laptop,2026-04-10,2,Y,30
+AST-0115,Spruce Financial,Head office,Desktop,2026-04-10,8,Y,30
+AST-0116,Spruce Financial,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0117,Spruce Financial,Branch,Laptop,2026-04-10,2,Y,30
+AST-0118,Spruce Financial,Head office,Desktop,2026-04-10,8,Y,30
+AST-0119,Spruce Financial,ATM network,ATM terminal,2026-04-10,50,Y,30
+AST-0120,Spruce Financial,Branch,Laptop,2026-04-10,2,Y,30

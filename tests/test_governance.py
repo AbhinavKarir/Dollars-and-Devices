@@ -23,10 +23,10 @@ class GovernanceTests(unittest.TestCase):
 
     def test_unexpected_missing_current_and_growth_values_fail(self):
         data = load_metrics()
-        first = data[data.bank == "RBC"].iloc[0].copy()
+        first = data[data.bank == "Alder Bank"].iloc[0].copy()
         first["revenue"] = first["efficiency_ratio"] = float("nan")
         self.assertEqual(trace_metric(first, "efficiency_ratio")["status"], "FAIL")
-        previous, current = [r.copy() for _, r in data[data.bank == "RBC"].iterrows()]
+        previous, current = [r.copy() for _, r in data[data.bank == "Alder Bank"].iterrows()]
         current["revenue"] = current["revenue_growth_pct"] = float("nan")
         self.assertEqual(trace_metric(current, "revenue_growth_pct", previous)["status"], "FAIL")
 

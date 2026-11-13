@@ -3,8 +3,9 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from analytics import load_metrics, load_targets, make_scorecard, portfolio_summary, scenario
-from theme import BANK_COLOURS, TEAL, SLATE, apply_theme
+from theme import BANK_COLOURS, SLATE, apply_theme
 from evidence_views import render_kpi_workbench, render_financial_controls
+from asset_views import render_asset_controls
 
 st.set_page_config(page_title="Dollars & Devices | Operations Reporting", page_icon="D", layout="wide")
 apply_theme()
@@ -15,9 +16,12 @@ def load_data():
 
 with st.sidebar:
     st.title("Dollars & Devices")
-    case = st.radio("Case study", ["Operations & Device Reporting", "Cash Reconciliation Lab"])
+    case = st.radio("Case study", ["Technology Refresh & Asset Disposition Controls", "Quarterly KPI Learning Case", "Cash Reconciliation Lab"])
     if case == "Cash Reconciliation Lab":
         st.caption("Separate fictional household dataset. Institution and quarter filters do not apply.")
+if case == "Technology Refresh & Asset Disposition Controls":
+    render_asset_controls()
+    st.stop()
 if case == "Cash Reconciliation Lab":
     st.title("Cash Reconciliation Lab")
     render_financial_controls()
@@ -153,15 +157,13 @@ with tabs[2]:
         st.dataframe(pd.concat([make_scorecard(row, targets["financial"]), make_scorecard(row, targets["devices"])], ignore_index=True).round(2), hide_index=True, width="stretch")
 
 with tabs[3]:
-    st.header("Operating efficiency and device recovery")
-    st.caption("Compare the selected quarter against illustrative limits. Lower expense ratios and higher recovery rates are favourable.")
-    fig = px.scatter(current, x="efficiency_ratio", y="recycling_rate", size="revenue", color="bank", text="bank", color_discrete_map=BANK_COLOURS, size_max=45)
-    fig.update_traces(textposition="top center")
+    st.header("Which sample profiles have higher expense ratios?")
+    ranked = current.sort_values("efficiency_ratio")
+    fig = px.bar(ranked, x="efficiency_ratio", y="bank", orientation="h", color="bank", color_discrete_map=BANK_COLOURS)
     fig.add_vline(x=cost_target, line_dash="dash", line_color=SLATE)
-    fig.add_hline(y=recovery_target, line_dash="dash", line_color=TEAL)
-    fig.update_layout(xaxis_title="Efficiency (%) · lower is better", yaxis_title="Recycling (%) · higher is better")
+    fig.update_layout(xaxis_title="Expense / revenue (%)", yaxis_title="Fictional institution", showlegend=False)
     st.plotly_chart(fig, width="stretch")
-    st.caption("Targets are illustrative. Bubble size indicates fictional revenue. Comparison does not establish causation.")
+    st.caption("Illustrative cost target shown as a dashed line. Full selected-quarter data below provides the text alternative. These aggregate profiles do not explain asset disposition outcomes.")
 
     st.subheader("Evidence → investigation → owner")
     above_cost = float(row["efficiency_ratio"]) > cost_target
@@ -198,8 +200,8 @@ with tabs[3]:
     st.download_button("Download sample quarter CSV", current.to_csv(index=False), file_name="sample_quarter.csv", mime="text/csv")
 
     st.subheader("Worked investigation: a recovery exception")
-    st.caption("Illustrative training walkthrough using CIBC 2026-Q1. The hypotheses, proposed workflow and conditional outcome are hypothetical.")
-    example = df.loc[(df.bank == "CIBC") & (df.quarter == "2026-Q1")]
+    st.caption("Illustrative training walkthrough using Maple Harbour Bank 2026-Q1. The hypotheses, proposed workflow and conditional outcome are hypothetical.")
+    example = df.loc[(df.bank == "Maple Harbour Bank") & (df.quarter == "2026-Q1")]
     if not example.empty:
         case_row = example.iloc[0]
         observed = float(case_row.recycling_rate)

@@ -17,13 +17,13 @@ class TraceAndControlsTests(unittest.TestCase):
         cls.ledger, cls.statements, cls.budgets = load_case()
 
     def test_kpi_proof_for_latest_quarter(self):
-        r = self.data[(self.data.bank == "RBC") & (self.data.quarter == "2026-Q2")].iloc[0]
+        r = self.data[(self.data.bank == "Alder Bank") & (self.data.quarter == "2026-Q2")].iloc[0]
         for metric in ("efficiency_ratio", "net_margin", "retired_kg", "recycling_rate", "unrecycled_kg"):
             with self.subTest(metric=metric):
                 self.assertEqual(trace_metric(r, metric)["status"], "PASS")
 
     def test_missing_growth_baseline_not_misrepresented(self):
-        r = self.data[(self.data.bank == "RBC") & (self.data.quarter == "2026-Q1")].iloc[0]
+        r = self.data[(self.data.bank == "Alder Bank") & (self.data.quarter == "2026-Q1")].iloc[0]
         self.assertEqual(trace_metric(r, "revenue_growth_pct")["status"], "N/A")
         self.assertEqual(trace_metric(r, "recycling_pp_change")["status"], "N/A")
 

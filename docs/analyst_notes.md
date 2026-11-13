@@ -6,7 +6,7 @@ These examples are written as briefing notes, not as claims about real instituti
 
 **Question:** Did expenses increase at a similar rate to revenue?
 
-The Scotiabank-labelled fictional record goes from revenue CAD 9,000M and expenses CAD 5,200M in 2026-Q1 to revenue CAD 9,100M and expenses CAD 5,300M in 2026-Q2. The expense-to-revenue measure changes from 57.78% to 58.24%, an **unfavourable increase of approximately 0.46 percentage points**.
+The Cedar Bank-labelled fictional record goes from revenue CAD 9,000M and expenses CAD 5,200M in 2026-Q1 to revenue CAD 9,100M and expenses CAD 5,300M in 2026-Q2. The expense-to-revenue measure changes from 57.78% to 58.24%, an **unfavourable increase of approximately 0.46 percentage points**.
 
 **Interpretation:** Expenses increased approximately 1.92% whereas revenue increased approximately 1.11%. The cost-growth gap is positive. Investigate the categories of expense, seasonality and revenue mix before considering cuts.
 
@@ -14,7 +14,7 @@ The Scotiabank-labelled fictional record goes from revenue CAD 9,000M and expens
 
 ## Observation 02: technology recovery
 
-In the RBC-labelled fictional Q2 record, 10,100 kg of devices were recorded as retired and 9,100 kg were labelled recycled. This yields a recycling rate of about 90.1%. That is above the hypothetical 85% target.
+In the Alder Bank-labelled fictional Q2 record, 10,100 kg of devices were recorded as retired and 9,100 kg were labelled recycled. This yields a recycling rate of about 90.1%. That is above the hypothetical 85% target.
 
 **Interpretation:** This sample's recovery tracking looks comparatively strong. Verify the disposition certificates and definition of 'recycled' before treating it as environmental impact.
 
