@@ -1,5 +1,22 @@
 # Requirements and acceptance criteria | Illustrative BA artefact
 
+## Asset-controls release traceability
+
+These prospective acceptance rules apply to the new asset case. The older BA-01–12 requirements below describe the retained quarterly/household learning cases.
+
+| Requirement | Screen / implementation | Automated acceptance |
+| --- | --- | --- |
+| AC-01: detect exactly documented source defects | Asset Controls & Actions; asset_controls.reconcile_assets | test_exact_documented_defects_and_cost_cohort |
+| AC-02: do not match ambiguous evidence or double count cost | Asset Controls; matched evidence panel | test_ambiguous_ids_and_multiple_rules_are_not_matched |
+| AC-03: honour dates, absolute weight tolerance and data-media flag | Data & Methodology; reconciliation rules | test_tolerance_cutoff_and_non_data_device |
+| AC-04: changes in source evidence change detected exceptions | Asset Controls | test_clean_evidence_then_new_missing_receipt |
+| AC-05: explain structural errors | Asset Controls source-error message | test_structural_invalid_inputs_are_explained |
+| AC-06: findings, actions, owners, Open status and evidence age | Executive Overview; downloadable exception register | test_default_overview_and_exception_filters; test_exact_documented_defects_and_cost_cohort |
+| AC-07: dictionary covers every source column | Data & Methodology | test_every_source_column_has_dictionary_entry |
+| AC-08: preserve KPI Proof, SQL and cash education | Separate learning cases | existing test_analytics, test_sql, test_controls, test_edge_cases, test_governance and test_app_smoke suites |
+
+Status/owner edits and persistent closure history are deferred. All assignments are proposed, not accepted by actual business users.
+
 This document is **not** evidence of interviews with actual company stakeholders. These user stories are developed for a simulated internal reporting initiative.
 
 ## Assumed stakeholders
@@ -29,9 +46,9 @@ This document is **not** evidence of interviews with actual company stakeholders
 
 ## Example test scenarios
 
-**TS-01:** Select RBC 2026-Q1. The expense-to-revenue rate should be 7900 / 15000 × 100 = 52.6667% (display rounded).
+**TS-01:** Select Alder Bank 2026-Q1. The expense-to-revenue rate should be 7900 / 15000 × 100 = 52.6667% (display rounded).
 
-**TS-02:** Select RBC 2026-Q2. Total retired device mass should be 4000 + 2800 + 3300 = 10,100 kg and recycling should be 9100 / 10100 × 100 ≈ 90.0990%.
+**TS-02:** Select Alder Bank 2026-Q2. Total retired device mass should be 4000 + 2800 + 3300 = 10,100 kg and recycling should be 9100 / 10100 × 100 ≈ 90.0990%.
 
 **TS-03:** Request Q1 revenue growth. Show N/A rather than 0% or an arbitrary growth rate.
 

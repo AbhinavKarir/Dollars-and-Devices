@@ -16,21 +16,21 @@ print(round(efficiency_ratio(7900,15000), 1))
 #exercise 3: loop + function + conditions
 #Simulated Figures in C$ millions
 revenue = {
-    "RBC": 15000,
-    "TD": 12000,
-    "BMO": 10000,       
-    "CIBC": 8000,
-    "Scotiabank": 9000,
-    "National Bank": 11000,
+    "Alder Bank": 15000,
+    "Birch Trust": 12000,
+    "Juniper Bank": 10000,
+    "Maple Harbour Bank": 8000,
+    "Cedar Bank": 9000,
+    "Spruce Financial": 11000,
 }
 
 expenses = {
-    "RBC": 7900,
-    "TD": 6500,
-    "BMO": 5500,
-    "CIBC": 4500,
-    "Scotiabank": 5000,
-    "National Bank": 6000,
+    "Alder Bank": 7900,
+    "Birch Trust": 6500,
+    "Juniper Bank": 5500,
+    "Maple Harbour Bank": 4500,
+    "Cedar Bank": 5000,
+    "Spruce Financial": 6000,
 }
 
 for bank in revenue:
@@ -39,10 +39,10 @@ for bank in revenue:
     if ratio < 55:
         status = "Strong"
     elif ratio < 65:
-        status = "Acceptable" 
+        status = "Acceptable"
     else:
         status = "Needs Attention"
-    
+
     print(bank, "->", round(ratio, 1), "%", "|", status)
 
 #Exercise 4: Practice

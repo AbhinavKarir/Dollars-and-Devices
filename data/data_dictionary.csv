@@ -1,0 +1,54 @@
+dataset,column,meaning,unit,example
+data/asset_case/asset_register.csv,asset_id,Synthetic device identity; one unique asset expected,identifier,AST-0001
+data/asset_case/asset_register.csv,institution,Fictional institution label,label,Alder Bank
+data/asset_case/asset_register.csv,site_type,"Retirement location type: Branch, Head office, ATM network",category,Head office
+data/asset_case/asset_register.csv,device_type,"Equipment category: Laptop, Desktop, ATM terminal",category,Desktop
+data/asset_case/asset_register.csv,retired_date,Date device recorded retired; starts evidence age,ISO date,2026-04-10
+data/asset_case/asset_register.csv,expected_weight_kg,Register weight expected for one device,kg,8
+data/asset_case/asset_register.csv,contains_data_media,Y requires destruction certificate confirmation; N does not,Y/N,Y
+data/asset_case/asset_register.csv,disposal_budget_cad,Approved synthetic disposal allowance per asset; excludes purchase cost,CAD,30
+data/asset_case/recycler_receipts.csv,receipt_id,Vendor receipt identity; unique per asset receipt expected,identifier,RCP-0002
+data/asset_case/recycler_receipts.csv,asset_id,Synthetic device identity; one unique asset expected,identifier,AST-0002
+data/asset_case/recycler_receipts.csv,vendor,Fictional disposal vendor,label,Demo Circular Services
+data/asset_case/recycler_receipts.csv,received_date,Collection evidence date; must not precede retirement,ISO date,2026-04-20
+data/asset_case/recycler_receipts.csv,weight_kg,Vendor-reported asset weight; absolute tolerance 0.5 kg,kg,50
+data/asset_case/recycler_receipts.csv,certificate_received,Y indicates certificate confirmation; authenticity not verified,Y/N,Y
+data/asset_case/recycler_receipts.csv,disposal_cost_cad,Recorded vendor disposal charge; not full refresh programme cost,CAD,32
+data/finance_case/budgets.csv,category,Household spending or income category,label,Housing
+data/finance_case/budgets.csv,monthly_budget,Household monthly category spending allowance,CAD,1390
+data/finance_case/statements.csv,month,Household reporting month,YYYY-MM,2026-09
+data/finance_case/statements.csv,opening_balance,Household opening cash balance,CAD,2650
+data/finance_case/statements.csv,statement_closing_balance,Separately stored synthetic household statement closing balance,CAD,3518
+data/finance_case/transactions.csv,transaction_id,Unique synthetic household ledger transaction,identifier,TX001
+data/finance_case/transactions.csv,date,Household transaction date,ISO date,2026-09-01
+data/finance_case/transactions.csv,description,Household transaction narrative,text,Salary (fortnight 1)
+data/finance_case/transactions.csv,category,Household spending or income category,label,Income
+data/finance_case/transactions.csv,direction,Household cash movement direction,in/out,in
+data/finance_case/transactions.csv,amount,Positive household cash transaction amount,CAD,1650
+data/finance_case/transactions.csv,month,Household reporting month,YYYY-MM,2026-09
+data/processed/bank_ewaste_metrics.csv,bank,Fictional institution label; legacy column name,label,Alder Bank
+data/processed/bank_ewaste_metrics.csv,quarter,Reporting quarter; consecutive quarters needed for growth,YYYY-Qn,2026-Q1
+data/processed/bank_ewaste_metrics.csv,desktops_kg,Aggregate mass of retired desktops,kg,4200
+data/processed/bank_ewaste_metrics.csv,atm_terminals_kg,Aggregate mass of retired ATM terminals,kg,2600
+data/processed/bank_ewaste_metrics.csv,laptops_kg,Aggregate mass of retired laptops,kg,3100
+data/processed/bank_ewaste_metrics.csv,recycled_kg,Mass labelled recycled; legacy aggregates lack receipt support,kg,8700
+data/processed/bank_ewaste_metrics.csv,total_ewaste_kg,Stale aggregate retired category mass; not used by application,kg,9900
+data/processed/bank_ewaste_metrics.csv,recycling_ratio,Stale rounded recycling percentage; not used by application,percent,87.9
+data/processed/bank_metrics.csv,bank,Fictional institution label; legacy column name,label,Alder Bank
+data/processed/bank_metrics.csv,quarter,Reporting quarter; consecutive quarters needed for growth,YYYY-Qn,2026-Q1
+data/processed/bank_metrics.csv,revenue,Invented total operating revenue; no detailed income components,CAD millions,15000
+data/processed/bank_metrics.csv,expenses,Invented non-interest operating expenses; excludes tax and credit-loss provisions,CAD millions,7900
+data/processed/bank_metrics.csv,net_income,Invented after-tax net income; accounting bridge is not modelled,CAD millions,4000
+data/processed/bank_metrics.csv,efficiency_ratio,Expenses divided by revenue times 100,percent,52.666666666666664
+data/processed/bank_metrics.csv,net_margin,Net income divided by revenue times 100,percent,26.7
+data/raw/bank_ewaste.csv,bank,Fictional institution label; legacy column name,label,Alder Bank
+data/raw/bank_ewaste.csv,quarter,Reporting quarter; consecutive quarters needed for growth,YYYY-Qn,2026-Q1
+data/raw/bank_ewaste.csv,desktops_kg,Aggregate mass of retired desktops,kg,4200
+data/raw/bank_ewaste.csv,atm_terminals_kg,Aggregate mass of retired ATM terminals,kg,2600
+data/raw/bank_ewaste.csv,laptops_kg,Aggregate mass of retired laptops,kg,3100
+data/raw/bank_ewaste.csv,recycled_kg,Mass labelled recycled; legacy aggregates lack receipt support,kg,8700
+data/raw/bank_financials.csv,bank,Fictional institution label; legacy column name,label,Alder Bank
+data/raw/bank_financials.csv,quarter,Reporting quarter; consecutive quarters needed for growth,YYYY-Qn,2026-Q1
+data/raw/bank_financials.csv,revenue,Invented total operating revenue; no detailed income components,CAD millions,15000
+data/raw/bank_financials.csv,expenses,Invented non-interest operating expenses; excludes tax and credit-loss provisions,CAD millions,7900
+data/raw/bank_financials.csv,net_income,Invented after-tax net income; accounting bridge is not modelled,CAD millions,4000

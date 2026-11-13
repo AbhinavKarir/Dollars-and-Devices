@@ -16,13 +16,13 @@ class AnalyticsTests(unittest.TestCase):
         self.assertEqual(self.data.quarter.nunique(), 2)
         self.assertFalse(self.data.duplicated(["bank", "quarter"]).any())
 
-    def test_sample_rbc_q1_financial_calculations(self):
-        row = self.data[(self.data.bank == "RBC") & (self.data.quarter == "2026-Q1")].iloc[0]
+    def test_sample_alder_q1_financial_calculations(self):
+        row = self.data[(self.data.bank == "Alder Bank") & (self.data.quarter == "2026-Q1")].iloc[0]
         self.assertAlmostEqual(row.efficiency_ratio, 7900 / 15000 * 100)
         self.assertAlmostEqual(row.net_margin, 4000 / 15000 * 100)
 
-    def test_sample_rbc_q2_device_calculations(self):
-        row = self.data[(self.data.bank == "RBC") & (self.data.quarter == "2026-Q2")].iloc[0]
+    def test_sample_alder_q2_device_calculations(self):
+        row = self.data[(self.data.bank == "Alder Bank") & (self.data.quarter == "2026-Q2")].iloc[0]
         self.assertEqual(row.retired_kg, 10100)
         self.assertEqual(row.unrecycled_kg, 1000)
         self.assertAlmostEqual(row.recycling_rate, 9100 / 10100 * 100)
@@ -47,15 +47,15 @@ class AnalyticsTests(unittest.TestCase):
         self.assertEqual(target_status(83, 85, "higher", 3), "Watch")
 
     def test_story_and_scorecards(self):
-        row = self.data[(self.data.bank == "TD") & (self.data.quarter == "2026-Q2")].iloc[0]
+        row = self.data[(self.data.bank == "Birch Trust") & (self.data.quarter == "2026-Q2")].iloc[0]
         stories = story_cards(row)
         self.assertEqual(len(stories), 4)
-        self.assertIn("TD", stories[0]["headline"])
+        self.assertIn("Birch Trust", stories[0]["headline"])
         self.assertEqual(len(make_scorecard(row, self.targets["financial"])), 4)
         self.assertEqual(len(make_scorecard(row, self.targets["devices"])), 4)
 
     def test_first_quarter_is_not_assigned_fake_growth(self):
-        row = self.data[(self.data.bank == "RBC") & (self.data.quarter == "2026-Q1")].iloc[0]
+        row = self.data[(self.data.bank == "Alder Bank") & (self.data.quarter == "2026-Q1")].iloc[0]
         scores = make_scorecard(row, self.targets["financial"])
         self.assertEqual(scores[scores.Metric == "Revenue growth QoQ"].iloc[0]["Status"], "No baseline")
 

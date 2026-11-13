@@ -1,7 +1,7 @@
 import pandas as pd
 #Simulated Figures in C$ millions
 data = {
-    "bank": ["RBC", "TD", "BMO", "CIBC", "Scotiabank", "National Bank"],
+    "bank": ["Alder Bank", "Birch Trust", "Juniper Bank", "Maple Harbour Bank", "Cedar Bank", "Spruce Financial"],
     "revenue": [15000, 14000, 9000, 9500, 7500, 3500],
     "expenses": [7900, 6500, 5500, 4500, 5000, 6000],
 }

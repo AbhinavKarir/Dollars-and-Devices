@@ -24,8 +24,8 @@ class EdgeCaseTests(unittest.TestCase):
             for frame in (money, devices):
                 frame.loc[frame.quarter == '2026-Q2', 'quarter'] = '2026-Q3'
         data = self.edited_metrics(modify)
-        current = data[(data.bank == 'RBC') & (data.quarter == '2026-Q3')].iloc[0]
-        previous = data[(data.bank == 'RBC') & (data.quarter == '2026-Q1')].iloc[0]
+        current = data[(data.bank == 'Alder Bank') & (data.quarter == '2026-Q3')].iloc[0]
+        previous = data[(data.bank == 'Alder Bank') & (data.quarter == '2026-Q1')].iloc[0]
         self.assertTrue(pd.isna(current.revenue_growth_pct))
         self.assertTrue(pd.isna(current.efficiency_pp_change))
         self.assertEqual(current.revenue_growth_pct_reason, 'Period gap')
@@ -34,9 +34,9 @@ class EdgeCaseTests(unittest.TestCase):
 
     def test_zero_expense_baseline_is_unavailable_not_infinity(self):
         def modify(money, devices):
-            money.loc[(money.bank == 'RBC') & (money.quarter == '2026-Q1'), 'expenses'] = 0
+            money.loc[(money.bank == 'Alder Bank') & (money.quarter == '2026-Q1'), 'expenses'] = 0
         data = self.edited_metrics(modify)
-        first, second = [r for _, r in data[data.bank == 'RBC'].iterrows()]
+        first, second = [r for _, r in data[data.bank == 'Alder Bank'].iterrows()]
         self.assertTrue(pd.isna(second.expense_growth_pct))
         self.assertEqual(second.expense_growth_pct_reason, 'Zero baseline')
         self.assertEqual(trace_metric(second, 'expense_growth_pct', first)['status'], 'UNAVAILABLE')
@@ -53,10 +53,10 @@ class EdgeCaseTests(unittest.TestCase):
 
     def test_unrecycled_zero_baseline_is_unavailable(self):
         def modify(money, devices):
-            mask = (devices.bank == 'RBC') & (devices.quarter == '2026-Q1')
+            mask = (devices.bank == 'Alder Bank') & (devices.quarter == '2026-Q1')
             devices.loc[mask, 'recycled_kg'] = devices.loc[mask, ['desktops_kg','atm_terminals_kg','laptops_kg']].sum(axis=1)
         data = self.edited_metrics(modify)
-        second = data[(data.bank == 'RBC') & (data.quarter == '2026-Q2')].iloc[0]
+        second = data[(data.bank == 'Alder Bank') & (data.quarter == '2026-Q2')].iloc[0]
         self.assertTrue(pd.isna(second.unrecycled_growth_pct))
         self.assertEqual(second.unrecycled_growth_pct_reason, 'Zero baseline')
 

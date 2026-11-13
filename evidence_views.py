@@ -19,7 +19,7 @@ def fmt(value, unit):
 
 def render_kpi_workbench(data, bank, quarter):
     st.subheader("Calculation workbench")
-    st.write("Trace every figure to source columns and recompute it independently.")
+    st.write("Re-perform each formula from source columns. The separate SQLite test provides an independent implementation cross-check.")
     bank_rows = data.loc[data.bank == bank].sort_values("quarter")
     selected = bank_rows.loc[bank_rows.quarter == quarter].iloc[0]
     previous_rows = bank_rows.loc[bank_rows.quarter < quarter]
@@ -30,7 +30,7 @@ def render_kpi_workbench(data, bank, quarter):
 
     a, b, c = st.columns(3)
     a.metric("Displayed result", fmt(trace["dashboard_value"], trace["unit"]))
-    b.metric("Independent result", fmt(trace["recomputed"], trace["unit"]))
+    b.metric("Re-performed result", fmt(trace["recomputed"], trace["unit"]))
     c.metric("Arithmetic check", trace["status"])
     st.code(trace["formula"], language="text")
     st.write("Data source:", trace["source"])
@@ -43,15 +43,15 @@ def render_kpi_workbench(data, bank, quarter):
     elif trace["status"] in {"N/A", "UNAVAILABLE"}:
         st.info("Comparison unavailable: " + trace["reason"] + ". No zero or growth value has been substituted.")
     else:
-        st.success("Independent calculation matches the stored metric.")
+        st.success("Re-performed calculation matches the stored metric.")
 
     st.divider()
     st.subheader("Internal validation register")
-    st.caption("These are checks against synthetic data, not an audit of real bank disclosures.")
+    st.caption("13 control definitions applied to 12 synthetic rows. Loader integrity gates run first; these arithmetic checks do not demonstrate operational defect detection. See Asset Controls for defective source evidence.")
     checks = validate_dataset(data)
     totals = checks.Result.value_counts()
     x, y, z, w, u = st.columns(5)
-    x.metric("Total checks", len(checks))
+    x.metric("Control definitions", checks.Check.nunique())
     y.metric("Passed", int(totals.get("PASS", 0)))
     z.metric("Failed", int(totals.get("FAIL", 0)))
     w.metric("N/A", int(totals.get("N/A", 0)))

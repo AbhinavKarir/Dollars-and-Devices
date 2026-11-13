@@ -1,5 +1,22 @@
 # Current and target process | Conceptual simulation
 
+## Primary asset disposition case
+
+This is a designed simulation, not an observed organizational process.
+
+~~~mermaid
+flowchart TD
+A[IT records device retirement] --> B[Vendor provides receipt and certificate confirmation]
+B --> C[Controller checks identities dates and weights]
+C --> D{Evidence complete?}
+D -->|Yes| E[Include unique asset and disposal cost in comparable cohort]
+D -->|No| F[Open exception with proposed owner and evidence request]
+F --> G[IT vendor manager or security reviews source evidence]
+G --> H[Correct source records after review and rerun]
+~~~
+
+Missing records, duplicate evidence and missing certificates are visible exceptions. Status changes and closure evidence are not persisted in this release. The older diagrams below describe the retained KPI learning workflow.
+
 This is a **designed example**, not an observed workflow at a bank or company.
 
 ## Before: weak reporting process
